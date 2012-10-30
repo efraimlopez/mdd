@@ -47,6 +47,21 @@
     </eOperations>
     <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eOperations name="getPrueba" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getSubFolders" upperBound="-1">
+      <eParameters name="parentFolder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="getParent">
+      <eParameters name="childFolder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="hasSubFolders" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="folder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="setAsChild">
+      <eParameters name="childFolder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="setAsFather">
+      <eParameters name="fatherFolder" eType="#//Folder"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contains" upperBound="-1"
         eType="#//Task" eOpposite="#//Task/belongsTo"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contains" upperBound="-1"
@@ -61,6 +76,7 @@
         changeable="false" iD="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="prueba" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="father" eType="#//Folder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TasksManager">
     <eOperations name="createTask" lowerBound="1" eType="#//Task"/>
@@ -70,6 +86,8 @@
     <eOperations name="deleteTask">
       <eParameters name="task" eType="#//Task"/>
     </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
+        eType="#//Task"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FoldersManager">
     <eOperations name="createFolder" lowerBound="1" eType="#//Folder"/>
@@ -79,5 +97,11 @@
     <eOperations name="deleteFolder">
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
+    <eOperations name="getRootFolder" lowerBound="1" upperBound="-1" eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="taskInstance" eType="#//TasksManager"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="folders" lowerBound="1"
+        upperBound="-1" eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentFolder" lowerBound="1"
+        eType="#//Folder"/>
   </eClassifiers>
 </ecore:EPackage>
