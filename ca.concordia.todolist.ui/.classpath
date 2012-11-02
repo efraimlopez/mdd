@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.osgi_3.7.2.v20120110-1415.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.osgi_3.7.2.v20120110-1415.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.core.runtime_3.7.0.v20110110.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.core.runtime_3.7.0.v20110110.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.text_3.5.101.v20110928-1504.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.text_3.5.101.v20110928-1504.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.jface.text_3.7.2.v20111213-1208.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.jface.text_3.7.2.v20111213-1208.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
+	<classpathentry kind="lib" path="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar" sourcepath="/home/efraimlopez/eclipse_indigo/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-3.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-cypher-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-graph-algo-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-graph-matching-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-jmx-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-kernel-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-lucene-index-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-shell-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/neo4j-udc-1.9.M01.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache.servicemix.bundles.jline-0.9.94_1.jar"/>
+	<classpathentry kind="lib" path="lib/scala-library-2.9.1-1.jar"/>
+	<classpathentry kind="lib" path="lib/server-api-1.9.M01.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/ca.concordia.todolist"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
