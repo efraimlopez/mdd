@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_WZI6ACUhEeKlvuv_aFhmHQ" type="EcoreTools" name="ToDoListPIM" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_X5XWoCUhEeKlvuv_aFhmHQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_X5Zy4CUhEeKlvuv_aFhmHQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_X5aZ8CUhEeKlvuv_aFhmHQ" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_X5aZ8SUhEeKlvuv_aFhmHQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_X5aZ8iUhEeKlvuv_aFhmHQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_X5aZ8yUhEeKlvuv_aFhmHQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_X5bBACUhEeKlvuv_aFhmHQ" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_X5bBASUhEeKlvuv_aFhmHQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_X5bBAiUhEeKlvuv_aFhmHQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_X5bBAyUhEeKlvuv_aFhmHQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_X5XWoSUhEeKlvuv_aFhmHQ" fontColor="4210752" fontName="Ubuntu" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="ToDoListPIM.ecore#//Folder"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_X5XWoiUhEeKlvuv_aFhmHQ" x="269" y="81"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_WZI6ASUhEeKlvuv_aFhmHQ"/>
+  <element xmi:type="ecore:EPackage" href="ToDoListPIM.ecore#/"/>
+</notation:Diagram>
