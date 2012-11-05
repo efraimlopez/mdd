@@ -16,39 +16,39 @@
   */
 package ca.concordia.todolist.ui.core;
 
+import java.util.EventObject;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
+import ca.concordia.todolist.util.PersistenceProvider;
+
 import todolistdiag.Folder;
-import todolistdiag.FoldersManager;
+import todolistdiag.FolderManagerListener;
+import todolistdiag.ToDoListManager;
 
 /**
  * @author Efraim J Lopez
  *
  */
-public class FolderContentProvider implements ITreeContentProvider{
+public class FolderContentProvider implements ITreeContentProvider,FolderManagerListener{
 	/**
 	 * the viewer to which this content provider is associated
 	 */
 	private TreeViewer fViewer = null;
 	/**
 	 * the model manager {@link FoldersManager}
-	 *
 	 */
-	private FoldersManager manager = null;
+	private ToDoListManager manager = null;
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
 	@Override
 	public Object[] getChildren(Object obj) {
 		if(obj instanceof Folder && manager!=null){
-			//return manager.getChildren((Folder) obj);
-			Folder child1 = EMFManager.getInstance().getFactory().createFolder();
-			child1.setName("Child_1");
-			Folder child2 = EMFManager.getInstance().getFactory().createFolder();
-			child2.setName("Child_2");
-			return new Object[]{child1,child2};
+			Folder f = (Folder) obj;
+			return f.getSubFolders().toArray();
 		}
 		return null;
 	}
@@ -58,7 +58,8 @@ public class FolderContentProvider implements ITreeContentProvider{
 	@Override
 	public Object getParent(Object obj) {
 		if(obj instanceof Folder  && manager!=null){
-			//return manager.getParent((Folder)obj);
+			Folder f = (Folder) obj;
+			return f.getParent();
 		}
 		return null;
 	}
@@ -66,10 +67,10 @@ public class FolderContentProvider implements ITreeContentProvider{
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
 	@Override
-	public boolean hasChildren(Object element) {
-		if(element instanceof Folder  && manager!=null){
-			//return manager.hasChildren((Folder)element);
-			return true;
+	public boolean hasChildren(Object obj) {
+		if(obj instanceof Folder  && manager!=null){
+			Folder f = (Folder) obj;
+			return f.hasSubFolder();
 		}
 		return false;
 	}
@@ -86,34 +87,44 @@ public class FolderContentProvider implements ITreeContentProvider{
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		this.fViewer = (TreeViewer) viewer;
-		//if (manager != null)
-			//manager.removeTreeItemsManagerListener(this);
-		manager = (FoldersManager) newInput;
-		//if (manager != null)
-			//manager.addTreeItemsManagerListener(this);
+		if (manager != null)
+			manager.removeFolderManagerListener(this);
+		manager = (ToDoListManager) newInput;
+		if (manager != null)
+			manager.addFolderManagerListener(this);
 	}
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
 	 */
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if(manager!=null){
-			//return manager.getRootElements();
-			Folder root = EMFManager.getInstance().getFactory().createFolder();
-			root.setName("Root Folder");
-			return new Object[]{root};
+		if(manager!=null){	
+			return new Object[]{manager.getRootFolder()};
 		}
 		return null;
 	}
-
-	/*
+	/* (non-Javadoc)
+	 * @see todolistdiag.FolderManagerListener#folderAdded(java.util.EventObject)
+	 */
 	@Override
-	public void itemsChanged(TreeItemsManagerEvent event) {
-		//so far nothing here
+	public void folderAdded(EventObject event){
+		updateViewer();
 	}
-
+	/* (non-Javadoc)
+	 * @see todolistdiag.FolderManagerListener#folderDeleted(java.util.EventObject)
+	 */
 	@Override
-	public void tracesChanged(TreeItemsManagerEvent event) {
+	public void folderDeleted(EventObject event){
+		updateViewer();
+	}
+	/* (non-Javadoc)
+	 * @see todolistdiag.FolderManagerListener#folderModified(java.util.EventObject)
+	 */
+	@Override
+	public void folderModified(EventObject event){
+		updateViewer();
+	}
+	private void updateViewer(){
         // Ignore update if disposed
         if (fViewer.getTree().isDisposed()) {
             return;
@@ -126,8 +137,6 @@ public class FolderContentProvider implements ITreeContentProvider{
                     fViewer.expandToLevel(2);
                 }
             }
-        });		
+        });			
 	}
-	*/
-
 }

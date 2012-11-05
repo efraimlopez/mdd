@@ -20,11 +20,13 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
+import ca.concordia.todolist.util.EMFManager;
+
 import todolistdiag.Folder;
-import todolistdiag.FoldersManager;
 import todolistdiag.Importance;
 import todolistdiag.Status;
 import todolistdiag.Task;
+import todolistdiag.ToDoListManager;
 
 /**
  * @author Efraim J Lopez
@@ -39,7 +41,7 @@ public class TaskContentProvider implements IStructuredContentProvider{
 	 * the model manager {@link FoldersManager}
 	 *
 	 */
-	private FoldersManager manager = null;
+	private ToDoListManager manager = null;
 	/**
 	 * The folder containing the tasks being shown by this table viewer
 	 */
@@ -47,7 +49,7 @@ public class TaskContentProvider implements IStructuredContentProvider{
 	/**
 	 * Class constructor
 	 */
-	public TaskContentProvider(FoldersManager manager){
+	public TaskContentProvider(ToDoListManager manager){
 		this.manager = manager;
 		//we have to register to the listener here
 	}
@@ -67,12 +69,7 @@ public class TaskContentProvider implements IStructuredContentProvider{
 	}
 	@Override
 	public Object[] getElements(Object arg0) {
-		Task task1 = EMFManager.getInstance().getFactory().createTask();
-		task1.setName("Default Task");
-		task1.setImportanceLevel(Importance.HIGH_LITERAL);
-		task1.setStatus(Status.NOT_STARTED_LITERAL);
-		task1.setDescription("The unique task so far");
-		return new Object[]{task1};
+		return containerFolder.getTasks().toArray();
 	}
 
 }
