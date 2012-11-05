@@ -130,6 +130,17 @@
     <element xmi:type="ecore:EEnum" href="ToDoListPIM.ecore#//Importance"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qc_p4iUhEeKlvuv_aFhmHQ" x="444" y="156"/>
   </children>
+  <children xmi:type="notation:Node" xmi:id="_QNoksSYLEeK3gaoR7Y-gJQ" type="1003">
+    <children xmi:type="notation:Node" xmi:id="_QN2nICYLEeK3gaoR7Y-gJQ" type="4007"/>
+    <children xmi:type="notation:Node" xmi:id="_QN3OMCYLEeK3gaoR7Y-gJQ" type="5007">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_QN3OMSYLEeK3gaoR7Y-gJQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_QN3OMiYLEeK3gaoR7Y-gJQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_QN3OMyYLEeK3gaoR7Y-gJQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_QNoksiYLEeK3gaoR7Y-gJQ" fontColor="4210752" fontName="Ubuntu" fontHeight="10" fillColor="14668776" lineColor="4210752"/>
+    <element xmi:type="ecore:EAnnotation" href="ToDoListPIM.ecore#//%EntityTable%"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QNoksyYLEeK3gaoR7Y-gJQ" x="674" y="274"/>
+  </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_WZI6ASUhEeKlvuv_aFhmHQ"/>
   <element xmi:type="ecore:EPackage" href="ToDoListPIM.ecore#/"/>
   <edges xmi:type="notation:Edge" xmi:id="_klIpMCUiEeKlvuv_aFhmHQ" type="3002" source="_X5XWoCUhEeKlvuv_aFhmHQ" target="_oMmUkCUhEeKlvuv_aFhmHQ">

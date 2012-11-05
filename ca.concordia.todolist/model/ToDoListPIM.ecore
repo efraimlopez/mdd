@@ -3,6 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="todolistpim"
     nsURI="http://todolistpim/1.0" nsPrefix="todolistpim">
+  <eAnnotations source="EntityTable" references="#//Folder"/>
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="setAsParent">
