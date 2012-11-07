@@ -162,58 +162,84 @@ public class EditTask extends TitleAreaDialog {
 	protected Point getInitialSize() {
 		return new Point(645, 393);
 	}
-	
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
-
+	/**
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	/**
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
-
+	/**
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	/**
+	 * @return
+	 */
 	public Importance getImportance() {
 		return importance;
 	}
-
+	/**
+	 * @param importance
+	 */
 	public void setImportance(Importance importance) {
 		this.importance = importance;
 	}
-
+	/**
+	 * @return
+	 */
 	public Status getStatus() {
 		return status;
 	}
-
+	/**
+	 * @param status
+	 */
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-
+	/**
+	 * @return
+	 */
 	public List getFolders() {
 		return folders;
 	}
-
+	/**
+	 * @param folders
+	 */
 	public void setFolders(List folders) {
 		this.folders = folders;
 	}
-	
+	/**
+	 * 
+	 */
 	private void preFillDialog(){
-		this.textName.setText(name);
-		this.textDescription.setText(description);
+		if(name!=null)
+			this.textName.setText(name);
+		if(description!=null)
+			this.textDescription.setText(description);
 		if(importance!=null)
 			this.comboImportance.setText(importance.getName());
-		if(comboStatus!=null)
+		if(status!=null)
 			this.comboStatus.setText(status.getName());
 		if(folders!=null)
 			this.checkboxTreeViewer.setCheckedElements(folders.toArray());
 	}
-	
+	/**
+	 * @return
+	 */
 	public boolean isValid(){
 		if(name==null || name.trim().isEmpty()){
 			return false;

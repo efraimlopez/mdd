@@ -174,9 +174,7 @@ public class DesktopView extends ApplicationWindow {
 			public void run(){
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder parentFolder = (Folder)selection.getFirstElement();
-				//EditFolder dialog = new EditFolder(DesktopView.this.getShell(),DesktopView.this.getShellStyle()); 
-				//String folderName = (String) dialog.open();
-				EditFolder2 dialog = new EditFolder2(DesktopView.this.getShell());
+				EditFolder dialog = new EditFolder(DesktopView.this.getShell());
 				if(dialog.open()==Window.OK && dialog.getFolderName()!=null)
 					EMFManager.getInstance()
 						.getToDoListManager()
@@ -204,8 +202,9 @@ public class DesktopView extends ApplicationWindow {
 			public void run(){
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder folder = (Folder)selection.getFirstElement();
-				EditFolder2 dialog = new EditFolder2(DesktopView.this.getShell());
-				if(dialog.open()==Window.OK && dialog.getFolderName()!=null){
+				EditFolder dialog = new EditFolder(DesktopView.this.getShell());
+				dialog.setFolderName(folder.getName());
+				if(dialog.open() == Window.OK && dialog.isValid()){
 					folder.setName(dialog.getFolderName());
 					EMFManager.getInstance().getToDoListManager().editFolder(folder);	
 				}
