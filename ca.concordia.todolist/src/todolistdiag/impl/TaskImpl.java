@@ -6,14 +6,11 @@
  */
 package todolistdiag.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,14 +20,11 @@ import javax.persistence.Transient;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -130,7 +124,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getParentFolders()
-	 * @generated
 	 * @ordered
 	 */
 	@ManyToMany(targetEntity=FolderImpl.class,mappedBy="tasks",fetch=FetchType.EAGER)
@@ -266,11 +259,11 @@ public class TaskImpl extends EObjectImpl implements Task {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public List getParentFolders() {
 		if (parentFolders == null) {
-			parentFolders = new EObjectWithInverseResolvingEList.ManyInverse(Folder.class, this, TodolistdiagPackage.TASK__PARENT_FOLDERS, TodolistdiagPackage.FOLDER__TASKS);
+			//parentFolders = new EObjectWithInverseResolvingEList.ManyInverse(Folder.class, this, TodolistdiagPackage.TASK__PARENT_FOLDERS, TodolistdiagPackage.FOLDER__TASKS);
+			parentFolders = new ArrayList();
 		}
 		return parentFolders;
 	}

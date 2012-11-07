@@ -29,6 +29,8 @@ import ca.concordia.todolist.util.PersistenceProvider;
 
 import todolistdiag.Folder;
 import todolistdiag.FolderManagerListener;
+import todolistdiag.Importance;
+import todolistdiag.Status;
 import todolistdiag.Task;
 import todolistdiag.ToDoListManager;
 import todolistdiag.TodolistdiagPackage;
@@ -192,34 +194,66 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
-	public Task createTask() {
+	public Task createTask(String name, Importance importance, Status status, String description, List folders) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		Task task = EMFManager.getInstance().getFactory().createTask();
+		task.setName(name);
+		task.setImportanceLevel(importance);
+		task.setStatus(status);
+		task.setDescription(description);
+		for(Object o : folders){
+			Folder f = (Folder) o;
+			//f.getTasks().add(task);
+			task.getParentFolders().add(f);
+			f.getTasks().add(task);
+		}		
+		PersistenceProvider.getInstance().persist(task);
+		//notify all the listeners
+		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
+			FolderManagerListener listener = (FolderManagerListener) it.next();
+			listener.folderModified(null);
+		}
+		return task;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void editTask(Task task) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		for(Object o : task.getParentFolders()){
+			Folder f = (Folder) o;
+			f.getTasks().add(task);
+		}
+		PersistenceProvider.getInstance().update(task);
+		//notify all the listeners
+		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
+			FolderManagerListener listener = (FolderManagerListener) it.next();
+			listener.folderModified(null);
+		}
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void deleteTask(Task task) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		for(Object o : task.getParentFolders()){
+			Folder f = (Folder) o;
+			f.getTasks().remove(task);
+		}
+		PersistenceProvider.getInstance().delete(task);
+		//notify all the listeners
+		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
+			FolderManagerListener listener = (FolderManagerListener) it.next();
+			listener.folderModified(null);
+		}
 	}
 
 	/**

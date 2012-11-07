@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -31,7 +32,9 @@ import org.eclipse.swt.widgets.Tree;
 import ca.concordia.todolist.util.EMFManager;
 
 import todolistdiag.Folder;
+import todolistdiag.Task;
 import todolistdiag.ToDoListManager;
+import org.eclipse.swt.widgets.MenuItem;
 
 public class DesktopView extends ApplicationWindow {
 
@@ -39,6 +42,10 @@ public class DesktopView extends ApplicationWindow {
 	 * the treeviwer in charge of showing the list of folders
 	 */
 	private TreeViewer treeViewer;
+	/**
+	 * the tableviewer in charge of showing the list of tasks
+	 */
+	private TableViewer tableViewer;
 	/**
 	 * action that allows to open the folder creation panel
 	 */
@@ -52,6 +59,21 @@ public class DesktopView extends ApplicationWindow {
 	 */
 	private Action removeFolderAction;
 
+	/**
+	 * action that allows to open the task creation panel
+	 */
+	private Action addTaskAction;
+	/**
+	 *  action that allows to edit a task
+	 */
+	private Action editTaskAction;
+	/**
+	 * action that allows to remove a task
+	 */
+	private Action removeTaskAction;
+	/**
+	 * the table being managed by the tableviewer
+	 */
 	private Table table;
 	
 	/**
@@ -80,6 +102,7 @@ public class DesktopView extends ApplicationWindow {
 		treeViewer.setContentProvider(new FolderContentProvider());
 		treeViewer.setLabelProvider(new FolderLabelProvider());
 		treeViewer.setInput(EMFManager.getInstance().getToDoListManager());
+		treeViewer.expandAll();
 		
 		Tree tree = treeViewer.getTree();
 		tree.setLinesVisible(true);
@@ -88,7 +111,7 @@ public class DesktopView extends ApplicationWindow {
 		Label label_1 = new Label(bodyContainer, SWT.SEPARATOR | SWT.VERTICAL);
 		label_1.setBounds(287, 10, 8, 303);
 		
-		final TableViewer tableViewer = new TableViewer(bodyContainer, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(bodyContainer, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.setContentProvider(new TaskContentProvider(EMFManager.getInstance().getToDoListManager()));
 		tableViewer.setLabelProvider(new TaskLabelProvider());
 		table = tableViewer.getTable();
@@ -132,7 +155,8 @@ public class DesktopView extends ApplicationWindow {
 				}
 			}
 		});	
-		createMenuManager2();
+		createMenuManagerFolder();
+		createMenuManagerTask();
 		parent.layout();
 		return container;
 	}
@@ -150,10 +174,13 @@ public class DesktopView extends ApplicationWindow {
 			public void run(){
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder parentFolder = (Folder)selection.getFirstElement();
-				EditFolder dialog = new EditFolder(DesktopView.this.getShell(),DesktopView.this.getShellStyle()); 
-				String folderName = (String) dialog.open();
-				if(folderName!=null)
-					EMFManager.getInstance().getToDoListManager().createFolder(folderName, parentFolder);
+				//EditFolder dialog = new EditFolder(DesktopView.this.getShell(),DesktopView.this.getShellStyle()); 
+				//String folderName = (String) dialog.open();
+				EditFolder2 dialog = new EditFolder2(DesktopView.this.getShell());
+				if(dialog.open()==Window.OK && dialog.getFolderName()!=null)
+					EMFManager.getInstance()
+						.getToDoListManager()
+						.createFolder(dialog.getFolderName(), parentFolder);
 			}
 		};
 		removeFolderAction = new Action(){
@@ -177,13 +204,72 @@ public class DesktopView extends ApplicationWindow {
 			public void run(){
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder folder = (Folder)selection.getFirstElement();
-				EditFolder dialog = new EditFolder(DesktopView.this.getShell(),DesktopView.this.getShellStyle()); 
-				String folderName = (String) dialog.open();
-				if(folderName!=null){
-					folder.setName(folderName);
+				EditFolder2 dialog = new EditFolder2(DesktopView.this.getShell());
+				if(dialog.open()==Window.OK && dialog.getFolderName()!=null){
+					folder.setName(dialog.getFolderName());
 					EMFManager.getInstance().getToDoListManager().editFolder(folder);	
 				}
 			}			
+		};
+		addTaskAction = new Action(){
+			@Override
+			public String getText(){
+				return "Add Task";
+			}
+			@Override
+			public void run(){
+				EditTask dialog = new EditTask(DesktopView.this.getShell()); 
+				if(dialog.open() == Window.OK && dialog.isValid())
+					EMFManager.getInstance()
+						.getToDoListManager()
+						.createTask(dialog.getName(), 
+									dialog.getImportance(), 
+									dialog.getStatus(), 
+									dialog.getDescription(),
+									dialog.getFolders());
+			}
+		};
+		editTaskAction = new Action(){
+			@Override
+			public String getText(){
+				return "Edit Task";
+			}
+			@Override
+			public void run(){		
+				IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
+				Task task = (Task)selection.getFirstElement();
+				EditTask dialog = new EditTask(DesktopView.this.getShell());
+				dialog.setName(task.getName());
+				dialog.setImportance(task.getImportanceLevel());
+				dialog.setStatus(task.getStatus());
+				dialog.setDescription(task.getDescription());
+				dialog.setFolders(task.getParentFolders());
+				if(dialog.open() == Window.OK && dialog.isValid()){
+					task.setName(dialog.getName());
+					task.setImportanceLevel(dialog.getImportance());
+					task.setStatus(dialog.getStatus());
+					task.setDescription(dialog.getDescription());
+					for(Object o : task.getParentFolders()){
+						Folder f = (Folder) o;
+						f.getTasks().remove(task);
+					}
+					task.getParentFolders().removeAll(task.getParentFolders());
+					task.getParentFolders().addAll(dialog.getFolders());
+					EMFManager.getInstance().getToDoListManager().editTask(task);
+				}
+			}
+		};
+		removeTaskAction = new Action(){
+			@Override
+			public String getText(){
+				return "Remove Task";
+			}
+			@Override
+			public void run(){
+				IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
+				Task task = (Task)selection.getFirstElement();
+				EMFManager.getInstance().getToDoListManager().deleteTask(task);
+			}
 		};
 	}
 
@@ -200,7 +286,7 @@ public class DesktopView extends ApplicationWindow {
 	 * Create the menu manager.
 	 * @return the menu manager
 	 */
-	protected MenuManager createMenuManager2() {
+	protected MenuManager createMenuManagerFolder() {
 		MenuManager menuMgr = new MenuManager("menu2");
 		Menu menu = menuMgr.createContextMenu(treeViewer.getControl());
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -224,6 +310,31 @@ public class DesktopView extends ApplicationWindow {
 		});
 		menuMgr.setRemoveAllWhenShown(true);
 		treeViewer.getControl().setMenu(menu);
+		return menuMgr;
+	}
+	/**
+	 * Create the menu manager.
+	 * @return the menu manager
+	 */
+	protected MenuManager createMenuManagerTask() {
+		MenuManager menuMgr = new MenuManager("menu3");
+		Menu menu = menuMgr.createContextMenu(tableViewer.getControl());
+		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				if(tableViewer.getSelection().isEmpty()) {
+					manager.add(addTaskAction);
+					return;
+				}
+				if(tableViewer.getSelection() instanceof IStructuredSelection) {
+					manager.add(addTaskAction);
+					manager.add(editTaskAction);
+					manager.add(removeTaskAction);
+				}
+			}
+		});
+		menuMgr.setRemoveAllWhenShown(true);
+		tableViewer.getControl().setMenu(menu);
 		return menuMgr;
 	}
 	/**

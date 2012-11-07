@@ -6,6 +6,7 @@
  */
 package todolistdiag.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -58,7 +59,6 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getTasks()
-	 * @generated
 	 * @ordered
 	 */
 	@ManyToMany(targetEntity=TaskImpl.class,fetch=FetchType.EAGER)
@@ -75,7 +75,6 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSubFolders()
-	 * @generated
 	 * @ordered
 	 */
 	@OneToMany(targetEntity=FolderImpl.class,fetch=FetchType.EAGER,mappedBy="parent",cascade=CascadeType.REMOVE)
@@ -158,11 +157,11 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public List getTasks() {
 		if (tasks == null) {
-			tasks = new EObjectWithInverseResolvingEList.ManyInverse(Task.class, this, TodolistdiagPackage.FOLDER__TASKS, TodolistdiagPackage.TASK__PARENT_FOLDERS);
+			//tasks = new EObjectWithInverseResolvingEList.ManyInverse(Task.class, this, TodolistdiagPackage.FOLDER__TASKS, TodolistdiagPackage.TASK__PARENT_FOLDERS);
+			tasks = new ArrayList();
 		}
 		return tasks;
 	}

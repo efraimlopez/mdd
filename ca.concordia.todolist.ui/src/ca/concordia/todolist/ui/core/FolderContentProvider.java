@@ -134,7 +134,7 @@ public class FolderContentProvider implements ITreeContentProvider,FolderManager
             public void run() {
                 if (!fViewer.getTree().isDisposed()) {
             		fViewer.refresh();
-                    fViewer.expandToLevel(2);
+                    fViewer.expandAll();
                 }
             }
         });			

@@ -98,6 +98,14 @@ public class PersistenceProvider {
 	    	task1.getParentFolders().add(subFolder);
 	    	persist(task1);
 	    }
+	    q = entityManager.createQuery("select t from TaskImpl t");
+	    List<Task> todoList2 = q.getResultList();
+	    if(todoList2!=null){
+	    	for(Object o : todoList2){
+	    		Task t = (Task) o;
+	    		System.out.println("task = "+t.getName() + " /// "+ t.getParentFolders().toString());
+	    	}
+	    }
 		// Registers a shutdown hook for the apache derbi instance so that it
 	    // shuts down nicely when the VM exits (even if you "Ctrl-C" the
 	    // running example before it's completed)

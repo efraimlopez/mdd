@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see todolistdiag.TodolistdiagPackage#getFolderManagerListener()
  * @model interface="true" abstract="true"
  */
-public interface FolderManagerListener {
+public interface FolderManagerListener{
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

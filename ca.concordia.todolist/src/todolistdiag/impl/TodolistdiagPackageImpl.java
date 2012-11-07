@@ -462,7 +462,11 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		initEReference(getToDoListManager_Folders(), this.getFolder(), null, "folders", null, 1, -1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getToDoListManager_Tasks(), this.getTask(), null, "tasks", null, 0, -1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(toDoListManagerEClass, this.getTask(), "createTask", 1, 1);
+		op = addEOperation(toDoListManagerEClass, this.getTask(), "createTask", 1, 1);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
+		addEParameter(op, this.getImportance(), "importance", 0, 1);
+		addEParameter(op, this.getStatus(), "status", 0, 1);
+		addEParameter(op, ecorePackage.getEEList(), "folders", 0, 1);
 
 		op = addEOperation(toDoListManagerEClass, null, "editTask");
 		addEParameter(op, this.getTask(), "task", 0, 1);

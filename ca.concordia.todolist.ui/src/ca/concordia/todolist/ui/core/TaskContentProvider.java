@@ -16,23 +16,21 @@
   */
 package ca.concordia.todolist.ui.core;
 
+import java.util.EventObject;
+
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-import ca.concordia.todolist.util.EMFManager;
-
 import todolistdiag.Folder;
-import todolistdiag.Importance;
-import todolistdiag.Status;
-import todolistdiag.Task;
+import todolistdiag.FolderManagerListener;
 import todolistdiag.ToDoListManager;
 
 /**
  * @author Efraim J Lopez
  *
  */
-public class TaskContentProvider implements IStructuredContentProvider{
+public class TaskContentProvider implements IStructuredContentProvider,FolderManagerListener{
 	/**
 	 * the viewer to which this content provider is associated
 	 */
@@ -61,15 +59,44 @@ public class TaskContentProvider implements IStructuredContentProvider{
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		this.fViewer = (TableViewer) viewer;
-		//if (manager != null)
-			//manager.removeTreeItemsManagerListener(this);
+		if (manager != null)
+			manager.removeFolderManagerListener(this);
 		containerFolder = (Folder) newInput;
-		//if (manager != null)
-			//manager.addTreeItemsManagerListener(this);
+		if (manager != null)
+			manager.addFolderManagerListener(this);
 	}
 	@Override
 	public Object[] getElements(Object arg0) {
 		return containerFolder.getTasks().toArray();
+	}
+	@Override
+	public void folderAdded(EventObject event) {
+		// TODO Auto-generated method stub
+		//nothing here
+	}
+	@Override
+	public void folderDeleted(EventObject event) {
+		// TODO Auto-generated method stub
+		//nothing here
+	}
+	@Override
+	public void folderModified(EventObject event) {
+		// TODO Auto-generated method stub
+		updateViewer();
+	}
+	private void updateViewer(){
+        // Ignore update if disposed
+        if (fViewer.getTable().isDisposed()) {
+            return;
+        }
+        fViewer.getTable().getDisplay().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                if (!fViewer.getTable().isDisposed()) {
+            		fViewer.refresh();
+                }
+            }
+        });			
 	}
 
 }

@@ -16,12 +16,9 @@
   */
 package ca.concordia.todolist.ui.core;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.lang.model.element.UnknownElementException;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IViewerLabelProvider;

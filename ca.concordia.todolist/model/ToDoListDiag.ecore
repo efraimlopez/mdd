@@ -54,7 +54,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Folder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
-    <eOperations name="createTask" lowerBound="1" eType="#//Task"/>
+    <eOperations name="createTask" lowerBound="1" eType="#//Task">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="importance" eType="#//Importance"/>
+      <eParameters name="status" eType="#//Status"/>
+      <eParameters name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="folders" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
+    </eOperations>
     <eOperations name="editTask">
       <eParameters name="task" eType="#//Task"/>
     </eOperations>

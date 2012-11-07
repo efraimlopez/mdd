@@ -8,6 +8,7 @@ package todolistdiag;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -107,10 +108,9 @@ public interface ToDoListManager extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model required="true"
-	 * @generated
+	 * @model required="true" foldersMany="false"
 	 */
-	Task createTask();
+	Task createTask(String name, Importance importance, Status status, String description, List folders);
 
 	/**
 	 * <!-- begin-user-doc -->
