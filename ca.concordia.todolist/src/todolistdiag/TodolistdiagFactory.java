@@ -53,6 +53,15 @@ public interface TodolistdiagFactory extends EFactory {
 	ToDoListManager createToDoListManager();
 
 	/**
+	 * Returns a new object of class '<em>Persistence Provider</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Persistence Provider</em>'.
+	 * @generated
+	 */
+	PersistenceProvider createPersistenceProvider();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

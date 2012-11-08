@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -44,9 +45,9 @@ import todolistdiag.TodolistdiagPackage;
  * <ul>
  *   <li>{@link todolistdiag.impl.FolderImpl#getTasks <em>Tasks</em>}</li>
  *   <li>{@link todolistdiag.impl.FolderImpl#getSubFolders <em>Sub Folders</em>}</li>
- *   <li>{@link todolistdiag.impl.FolderImpl#getName <em>Name</em>}</li>
- *   <li>{@link todolistdiag.impl.FolderImpl#getId <em>Id</em>}</li>
  *   <li>{@link todolistdiag.impl.FolderImpl#getParent <em>Parent</em>}</li>
+ *   <li>{@link todolistdiag.impl.FolderImpl#getId <em>Id</em>}</li>
+ *   <li>{@link todolistdiag.impl.FolderImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -82,24 +83,16 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	protected List subFolders;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getParent()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
+	@ManyToOne(targetEntity=FolderImpl.class)
+	//@JoinColumn(name="parent_id",referencedColumnName="id",nullable=true)
+	protected Folder parent;
 
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
@@ -125,16 +118,24 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	protected long id = ID_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParent()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	@ManyToOne(targetEntity=FolderImpl.class)
-	//@JoinColumn(name="parent_id",referencedColumnName="id",nullable=true)
-	protected Folder parent;
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -276,28 +277,6 @@ public class FolderImpl extends EObjectImpl implements Folder {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAsParent(Folder parentFolder) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAsChild(Folder childFolder) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case TodolistdiagPackage.FOLDER__TASKS:
@@ -330,13 +309,13 @@ public class FolderImpl extends EObjectImpl implements Folder {
 				return getTasks();
 			case TodolistdiagPackage.FOLDER__SUB_FOLDERS:
 				return getSubFolders();
-			case TodolistdiagPackage.FOLDER__NAME:
-				return getName();
-			case TodolistdiagPackage.FOLDER__ID:
-				return new Long(getId());
 			case TodolistdiagPackage.FOLDER__PARENT:
 				if (resolve) return getParent();
 				return basicGetParent();
+			case TodolistdiagPackage.FOLDER__ID:
+				return new Long(getId());
+			case TodolistdiagPackage.FOLDER__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -356,14 +335,14 @@ public class FolderImpl extends EObjectImpl implements Folder {
 				getSubFolders().clear();
 				getSubFolders().addAll((Collection)newValue);
 				return;
-			case TodolistdiagPackage.FOLDER__NAME:
-				setName((String)newValue);
+			case TodolistdiagPackage.FOLDER__PARENT:
+				setParent((Folder)newValue);
 				return;
 			case TodolistdiagPackage.FOLDER__ID:
 				setId(((Long)newValue).longValue());
 				return;
-			case TodolistdiagPackage.FOLDER__PARENT:
-				setParent((Folder)newValue);
+			case TodolistdiagPackage.FOLDER__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -382,14 +361,14 @@ public class FolderImpl extends EObjectImpl implements Folder {
 			case TodolistdiagPackage.FOLDER__SUB_FOLDERS:
 				getSubFolders().clear();
 				return;
-			case TodolistdiagPackage.FOLDER__NAME:
-				setName(NAME_EDEFAULT);
+			case TodolistdiagPackage.FOLDER__PARENT:
+				setParent((Folder)null);
 				return;
 			case TodolistdiagPackage.FOLDER__ID:
 				setId(ID_EDEFAULT);
 				return;
-			case TodolistdiagPackage.FOLDER__PARENT:
-				setParent((Folder)null);
+			case TodolistdiagPackage.FOLDER__NAME:
+				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -406,12 +385,12 @@ public class FolderImpl extends EObjectImpl implements Folder {
 				return tasks != null && !tasks.isEmpty();
 			case TodolistdiagPackage.FOLDER__SUB_FOLDERS:
 				return subFolders != null && !subFolders.isEmpty();
-			case TodolistdiagPackage.FOLDER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case TodolistdiagPackage.FOLDER__ID:
-				return id != ID_EDEFAULT;
 			case TodolistdiagPackage.FOLDER__PARENT:
 				return parent != null;
+			case TodolistdiagPackage.FOLDER__ID:
+				return id != ID_EDEFAULT;
+			case TodolistdiagPackage.FOLDER__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -425,10 +404,10 @@ public class FolderImpl extends EObjectImpl implements Folder {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", id: ");
+		result.append(" (id: ");
 		result.append(id);
+		result.append(", name: ");
+		result.append(name);
 		result.append(')');
 		return result.toString();
 	}

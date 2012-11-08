@@ -41,12 +41,12 @@ import todolistdiag.TodolistdiagPackage;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link todolistdiag.impl.TaskImpl#getId <em>Id</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getName <em>Name</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getStatus <em>Status</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getImportanceLevel <em>Importance Level</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getParentFolders <em>Parent Folders</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getDescription <em>Description</em>}</li>
- *   <li>{@link todolistdiag.impl.TaskImpl#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -54,6 +54,28 @@ import todolistdiag.TodolistdiagPackage;
  */
 @Entity
 public class TaskImpl extends EObjectImpl implements Task {
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final long ID_EDEFAULT = 0L;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	protected long id = ID_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -149,28 +171,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @ordered
 	 */
 	protected String description = DESCRIPTION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final long ID_EDEFAULT = 0L;
-
-	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected long id = ID_EDEFAULT;
 
 	protected String statusPersistanceable = this.getStatus().toString();
 	protected String importancePersistanceable = this.getImportanceLevel().toString();
@@ -376,6 +376,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case TodolistdiagPackage.TASK__ID:
+				return new Long(getId());
 			case TodolistdiagPackage.TASK__NAME:
 				return getName();
 			case TodolistdiagPackage.TASK__STATUS:
@@ -386,8 +388,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getParentFolders();
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				return getDescription();
-			case TodolistdiagPackage.TASK__ID:
-				return new Long(getId());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -399,6 +399,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case TodolistdiagPackage.TASK__ID:
+				setId(((Long)newValue).longValue());
+				return;
 			case TodolistdiagPackage.TASK__NAME:
 				setName((String)newValue);
 				return;
@@ -415,9 +418,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case TodolistdiagPackage.TASK__ID:
-				setId(((Long)newValue).longValue());
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -429,6 +429,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case TodolistdiagPackage.TASK__ID:
+				setId(ID_EDEFAULT);
+				return;
 			case TodolistdiagPackage.TASK__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -444,9 +447,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case TodolistdiagPackage.TASK__ID:
-				setId(ID_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -458,6 +458,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case TodolistdiagPackage.TASK__ID:
+				return id != ID_EDEFAULT;
 			case TodolistdiagPackage.TASK__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TodolistdiagPackage.TASK__STATUS:
@@ -468,8 +470,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return parentFolders != null && !parentFolders.isEmpty();
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case TodolistdiagPackage.TASK__ID:
-				return id != ID_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -483,7 +483,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (id: ");
+		result.append(id);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", status: ");
 		result.append(status);
@@ -491,8 +493,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 		result.append(importanceLevel);
 		result.append(", description: ");
 		result.append(description);
-		result.append(", id: ");
-		result.append(id);
 		result.append(')');
 		return result.toString();
 	}

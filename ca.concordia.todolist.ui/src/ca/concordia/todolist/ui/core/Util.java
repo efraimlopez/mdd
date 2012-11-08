@@ -20,6 +20,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
@@ -50,5 +53,26 @@ public class Util {
 		} catch (MalformedURLException e) {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
+	}
+	
+	/**
+	 * Gets the error message from the given diagnostic chain
+	 * @param diagnosticChain
+	 * @return
+	 */
+	public static String getErrorMessage(DiagnosticChain diagnosticChain){
+		StringBuilder message = new StringBuilder();
+		BasicDiagnostic diagnostics = (BasicDiagnostic) diagnosticChain;
+		for(Diagnostic diagnostic : diagnostics.getChildren()){
+			String rawMessage = diagnostic.getMessage();
+			for(int i=0; i<rawMessage.length();i++){
+				if(i%90==0){
+					message.append("\n");
+				}
+				message.append(rawMessage.charAt(i));
+			}
+			message.append("\n");
+		}
+		return message.toString();
 	}
 }

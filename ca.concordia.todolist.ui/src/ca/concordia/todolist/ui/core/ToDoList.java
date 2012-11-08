@@ -18,7 +18,6 @@ package ca.concordia.todolist.ui.core;
 
 import org.eclipse.swt.widgets.Display;
 
-import ca.concordia.todolist.util.PersistenceProvider;
 import ca.concordia.todolist.util.EMFManager;
 
 /**
@@ -34,7 +33,9 @@ public class ToDoList {
 	public static void main(String[] args) {
 		try {
 			EMFManager.getInstance().init();
-			PersistenceProvider.getInstance().init();
+			EMFManager.getInstance().getToDoListManager()
+									.getPersistanceProvider()
+									.init();
 			DesktopView window = new DesktopView();
 			window.setBlockOnOpen(true);
 			window.open();

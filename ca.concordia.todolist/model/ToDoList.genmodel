@@ -19,13 +19,15 @@
       <genEnumLiterals ecoreEnumLiteral="ToDoListDiag.ecore#//Importance/HIGH"/>
     </genEnums>
     <genDataTypes ecoreDataType="ToDoListDiag.ecore#//FolderManagerEvent"/>
+    <genDataTypes ecoreDataType="ToDoListDiag.ecore#//EntityManagerFactory"/>
+    <genDataTypes ecoreDataType="ToDoListDiag.ecore#//EntityManager"/>
     <genClasses ecoreClass="ToDoListDiag.ecore#//Task">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/status"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/importanceLevel"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Task/parentFolders"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/description"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/id"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Task/statusNotStarted"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Task/statusInProgress"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Task/statusDone"/>
@@ -33,9 +35,9 @@
     <genClasses ecoreClass="ToDoListDiag.ecore#//Folder">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/tasks"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/subFolders"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/name"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/id"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/parent"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/name"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Folder/hasSubFolder"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Folder/setAsParent">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//Folder/setAsParent/parentFolder"/>
@@ -49,7 +51,13 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//ToDoListManager/folderManagerListener"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//ToDoListManager/folders"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//ToDoListManager/tasks"/>
-      <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/createTask"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//ToDoListManager/persistanceProvider"/>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/createTask">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/name"/>
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/importance"/>
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/status"/>
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/description"/>
+      </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/editTask">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/editTask/task"/>
       </genOperations>
@@ -62,7 +70,9 @@
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/removeFolderManagerListener">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/removeFolderManagerListener/listener"/>
       </genOperations>
-      <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/createFolder"/>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/createFolder">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createFolder/name"/>
+      </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/editFolder">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/editFolder/folder"/>
       </genOperations>
@@ -79,6 +89,25 @@
       </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//FolderManagerListener/folderModified">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//FolderManagerListener/folderModified/event"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="ToDoListDiag.ecore#//PersistanceProvider">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//PersistanceProvider/PERSISTENCE_UNIT_NAME"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//PersistanceProvider/factory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//PersistanceProvider/entitymanager"/>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/startEmbeddedDB"/>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/persist">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//PersistanceProvider/persist/o"/>
+      </genOperations>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/update">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//PersistanceProvider/update/o"/>
+      </genOperations>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/delete">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//PersistanceProvider/delete/o"/>
+      </genOperations>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/init"/>
+      <genOperations ecoreOperation="ToDoListDiag.ecore#//PersistanceProvider/getAllObjects">
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//PersistanceProvider/getAllObjects/entityType"/>
       </genOperations>
     </genClasses>
   </genPackages>

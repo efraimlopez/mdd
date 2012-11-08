@@ -3,13 +3,22 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="todolistdiag"
     nsURI="http://todolistdiag/1.0" nsPrefix="todolistdiag">
-  <eAnnotations source="OneToMany" references="http://www.eclipse.org/emf/2002/Ecore#//EBoolean/%http:%2F%2F%2Forg%2Feclipse%2Femf%2Fecore%2Futil%2FExtendedMetaData%/@details.0 #//%OneToMany% #//Task">
-    <details key="owner"/>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
-    <eOperations name="statusNotStarted" lowerBound="1"/>
-    <eOperations name="statusInProgress" lowerBound="1"/>
-    <eOperations name="statusDone" lowerBound="1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="taskInFolder"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="taskInFolder" value="parentFolders->select((Task = self))->size() >= 1"/>
+    </eAnnotations>
+    <eOperations name="statusNotStarted"/>
+    <eOperations name="statusInProgress"/>
+    <eOperations name="statusDone"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" lowerBound="1"
         eType="#//Status"/>
@@ -18,8 +27,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parentFolders" lowerBound="1"
         upperBound="-1" eType="#//Folder" eOpposite="#//Folder/tasks"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"
-        iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Status">
     <eLiterals name="NOT_STARTED"/>
@@ -32,28 +39,34 @@
     <eLiterals name="HIGH" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="folderInFolder"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="folderInFolder" value="parent.id >= 0"/>
+    </eAnnotations>
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eOperations name="setAsParent">
-      <eParameters name="parentFolder" eType="#//Folder"/>
-    </eOperations>
-    <eOperations name="setAsChild">
-      <eParameters name="childFolder" eType="#//Folder"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
         eType="#//Task" eOpposite="#//Task/parentFolders"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subFolders" upperBound="-1"
         eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="namespace" value=""/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"
-        iD="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Folder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="uniqueFolderId uniqueTaskId"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="uniqueFolderId" value="folders->isUnique(id)"/>
+      <details key="uniqueTaskId" value="tasks->isUnique(id)"/>
+    </eAnnotations>
     <eOperations name="createTask" lowerBound="1" eType="#//Task">
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="importance" eType="#//Importance"/>
@@ -74,10 +87,10 @@
       <eParameters name="listener" eType="#//FolderManagerListener"/>
     </eOperations>
     <eOperations name="createFolder" lowerBound="1" eType="#//Folder">
-      <eParameters name="folderName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="parentFolder" eType="#//Folder"/>
     </eOperations>
-    <eOperations name="editFolder" lowerBound="1">
+    <eOperations name="editFolder">
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
     <eOperations name="deleteFolder">
@@ -91,6 +104,8 @@
         upperBound="-1" eType="#//Folder"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
         eType="#//Task"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="persistanceProvider" lowerBound="1"
+        eType="#//PersistenceProvider"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FolderManagerListener" abstract="true"
       interface="true">
@@ -105,4 +120,43 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="FolderManagerEvent" instanceClassName="java.util.EventObject"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceProvider">
+    <eOperations name="startEmbeddedDB"/>
+    <eOperations name="persist">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="entitymanager.getTransaction().begin();&#xA;try {&#xA;entitymanager.persist(o);&#xA;entitymanager.getTransaction().commit();&#xA;} catch (EntityExistsException|IllegalStateException|IllegalArgumentException e) {&#xA;entitymanager.getTransaction().rollback();&#xA;e.printStackTrace();&#xA;} "/>
+      </eAnnotations>
+      <eParameters name="o" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="update">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="entitymanager.getTransaction().begin();&#xA;try {&#xA;entitymanager.persist(entitymanager.merge(o));&#xA;entitymanager.getTransaction().commit();&#xA;} catch (IllegalStateException|IllegalArgumentException e) {&#xA;entitymanager.getTransaction().rollback();&#xA;e.printStackTrace();&#xA;} "/>
+      </eAnnotations>
+      <eParameters name="o" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="delete">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="entitymanager.getTransaction().begin();&#xA;try {&#xA;entitymanager.remove(entitymanager.merge(o));&#xA;entitymanager.getTransaction().commit();&#xA;} catch (IllegalStateException|IllegalArgumentException e) {&#xA;entitymanager.getTransaction().rollback();&#xA;e.printStackTrace();&#xA;} "/>
+      </eAnnotations>
+      <eParameters name="o" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="init">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="startEmbeddedDB();"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getAllObjects" upperBound="-1" eType="#//Folder">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="Query q = entitymanager.createQuery(&quot;select t from &quot;+entityType.getName()+&quot; t&quot;);&#xA;   return q.getResultList();"/>
+      </eAnnotations>
+      <eParameters name="entityType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PERSISTENCE_UNIT_NAME"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="factory" eType="#//EntityManagerFactory"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="entitymanager" eType="#//EntityManager"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EntityManagerFactory" instanceClassName="javax.persistence.EntityManagerFactory"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EntityManager" instanceClassName="javax.persistence.EntityManager"/>
 </ecore:EPackage>

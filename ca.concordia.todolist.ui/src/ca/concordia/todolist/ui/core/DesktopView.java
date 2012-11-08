@@ -2,9 +2,7 @@ package ca.concordia.todolist.ui.core;
 
 import java.util.Iterator;
 
-import org.eclipse.jface.action.AbstractAction;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -19,7 +17,6 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -29,12 +26,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
 
-import ca.concordia.todolist.util.EMFManager;
-
 import todolistdiag.Folder;
 import todolistdiag.Task;
-import todolistdiag.ToDoListManager;
-import org.eclipse.swt.widgets.MenuItem;
+import ca.concordia.todolist.util.EMFManager;
 
 public class DesktopView extends ApplicationWindow {
 
@@ -175,10 +169,12 @@ public class DesktopView extends ApplicationWindow {
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder parentFolder = (Folder)selection.getFirstElement();
 				EditFolder dialog = new EditFolder(DesktopView.this.getShell());
-				if(dialog.open()==Window.OK && dialog.getFolderName()!=null)
+				Folder mementoFolder = EMFManager.getInstance().getFactory().createFolder();
+				dialog.setFolder(mementoFolder);
+				if(dialog.open()==Window.OK)
 					EMFManager.getInstance()
 						.getToDoListManager()
-						.createFolder(dialog.getFolderName(), parentFolder);
+						.createFolder(mementoFolder.getName(), parentFolder);
 			}
 		};
 		removeFolderAction = new Action(){
@@ -203,9 +199,8 @@ public class DesktopView extends ApplicationWindow {
 				IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
 				Folder folder = (Folder)selection.getFirstElement();
 				EditFolder dialog = new EditFolder(DesktopView.this.getShell());
-				dialog.setFolderName(folder.getName());
-				if(dialog.open() == Window.OK && dialog.isValid()){
-					folder.setName(dialog.getFolderName());
+				dialog.setFolder(folder);
+				if(dialog.open() == Window.OK){
 					EMFManager.getInstance().getToDoListManager().editFolder(folder);	
 				}
 			}			
@@ -218,14 +213,16 @@ public class DesktopView extends ApplicationWindow {
 			@Override
 			public void run(){
 				EditTask dialog = new EditTask(DesktopView.this.getShell()); 
-				if(dialog.open() == Window.OK && dialog.isValid())
+				Task mementoTask = EMFManager.getInstance().getFactory().createTask();
+				dialog.setTask(mementoTask);
+				if(dialog.open() == Window.OK)
 					EMFManager.getInstance()
 						.getToDoListManager()
-						.createTask(dialog.getName(), 
-									dialog.getImportance(), 
-									dialog.getStatus(), 
-									dialog.getDescription(),
-									dialog.getFolders());
+						.createTask(mementoTask.getName(), 
+									mementoTask.getImportanceLevel(), 
+									mementoTask.getStatus(), 
+									mementoTask.getDescription(),
+									mementoTask.getParentFolders());
 			}
 		};
 		editTaskAction = new Action(){
@@ -238,22 +235,8 @@ public class DesktopView extends ApplicationWindow {
 				IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
 				Task task = (Task)selection.getFirstElement();
 				EditTask dialog = new EditTask(DesktopView.this.getShell());
-				dialog.setName(task.getName());
-				dialog.setImportance(task.getImportanceLevel());
-				dialog.setStatus(task.getStatus());
-				dialog.setDescription(task.getDescription());
-				dialog.setFolders(task.getParentFolders());
-				if(dialog.open() == Window.OK && dialog.isValid()){
-					task.setName(dialog.getName());
-					task.setImportanceLevel(dialog.getImportance());
-					task.setStatus(dialog.getStatus());
-					task.setDescription(dialog.getDescription());
-					for(Object o : task.getParentFolders()){
-						Folder f = (Folder) o;
-						f.getTasks().remove(task);
-					}
-					task.getParentFolders().removeAll(task.getParentFolders());
-					task.getParentFolders().addAll(dialog.getFolders());
+				dialog.setTask(task);
+				if(dialog.open() == Window.OK){
 					EMFManager.getInstance().getToDoListManager().editTask(task);
 				}
 			}

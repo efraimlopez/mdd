@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see todolistdiag.TodolistdiagFactory
  * @model kind="package"
- *        annotation="OneToMany owner='null'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore invocationDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot' settingDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot' validationDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot'"
  * @generated
  */
 public interface TodolistdiagPackage extends EPackage {
@@ -73,13 +73,22 @@ public interface TodolistdiagPackage extends EPackage {
 	int TASK = 0;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__ID = 0;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__NAME = 0;
+	int TASK__NAME = 1;
 
 	/**
 	 * The feature id for the '<em><b>Status</b></em>' attribute.
@@ -88,7 +97,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__STATUS = 1;
+	int TASK__STATUS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Importance Level</b></em>' attribute.
@@ -97,7 +106,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__IMPORTANCE_LEVEL = 2;
+	int TASK__IMPORTANCE_LEVEL = 3;
 
 	/**
 	 * The feature id for the '<em><b>Parent Folders</b></em>' reference list.
@@ -106,7 +115,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__PARENT_FOLDERS = 3;
+	int TASK__PARENT_FOLDERS = 4;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -115,16 +124,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__DESCRIPTION = 4;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TASK__ID = 5;
+	int TASK__DESCRIPTION = 5;
 
 	/**
 	 * The number of structural features of the '<em>Task</em>' class.
@@ -164,13 +164,13 @@ public interface TodolistdiagPackage extends EPackage {
 	int FOLDER__SUB_FOLDERS = 1;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Parent</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__NAME = 2;
+	int FOLDER__PARENT = 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -182,13 +182,13 @@ public interface TodolistdiagPackage extends EPackage {
 	int FOLDER__ID = 3;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__PARENT = 4;
+	int FOLDER__NAME = 4;
 
 	/**
 	 * The number of structural features of the '<em>Folder</em>' class.
@@ -246,13 +246,22 @@ public interface TodolistdiagPackage extends EPackage {
 	int TO_DO_LIST_MANAGER__TASKS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Persistance Provider</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER = 4;
+
+	/**
 	 * The number of structural features of the '<em>To Do List Manager</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TO_DO_LIST_MANAGER_FEATURE_COUNT = 4;
+	int TO_DO_LIST_MANAGER_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link todolistdiag.FolderManagerListener <em>Folder Manager Listener</em>}' class.
@@ -274,6 +283,52 @@ public interface TodolistdiagPackage extends EPackage {
 	int FOLDER_MANAGER_LISTENER_FEATURE_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link todolistdiag.impl.PersistenceProviderImpl <em>Persistence Provider</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see todolistdiag.impl.PersistenceProviderImpl
+	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getPersistenceProvider()
+	 * @generated
+	 */
+	int PERSISTENCE_PROVIDER = 4;
+
+	/**
+	 * The feature id for the '<em><b>PERSISTENCE UNIT NAME</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSISTENCE_PROVIDER__PERSISTENCE_UNIT_NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Factory</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSISTENCE_PROVIDER__FACTORY = 1;
+
+	/**
+	 * The feature id for the '<em><b>Entitymanager</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSISTENCE_PROVIDER__ENTITYMANAGER = 2;
+
+	/**
+	 * The number of structural features of the '<em>Persistence Provider</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSISTENCE_PROVIDER_FEATURE_COUNT = 3;
+
+	/**
 	 * The meta object id for the '{@link todolistdiag.Status <em>Status</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -281,7 +336,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getStatus()
 	 * @generated
 	 */
-	int STATUS = 4;
+	int STATUS = 5;
 
 	/**
 	 * The meta object id for the '{@link todolistdiag.Importance <em>Importance</em>}' enum.
@@ -291,7 +346,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getImportance()
 	 * @generated
 	 */
-	int IMPORTANCE = 5;
+	int IMPORTANCE = 6;
 
 	/**
 	 * The meta object id for the '<em>Folder Manager Event</em>' data type.
@@ -301,7 +356,28 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getFolderManagerEvent()
 	 * @generated
 	 */
-	int FOLDER_MANAGER_EVENT = 6;
+	int FOLDER_MANAGER_EVENT = 7;
+
+
+	/**
+	 * The meta object id for the '<em>Entity Manager Factory</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see javax.persistence.EntityManagerFactory
+	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManagerFactory()
+	 * @generated
+	 */
+	int ENTITY_MANAGER_FACTORY = 8;
+
+	/**
+	 * The meta object id for the '<em>Entity Manager</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see javax.persistence.EntityManager
+	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManager()
+	 * @generated
+	 */
+	int ENTITY_MANAGER = 9;
 
 
 	/**
@@ -500,6 +576,17 @@ public interface TodolistdiagPackage extends EPackage {
 	EReference getToDoListManager_Tasks();
 
 	/**
+	 * Returns the meta object for the reference '{@link todolistdiag.ToDoListManager#getPersistanceProvider <em>Persistance Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Persistance Provider</em>'.
+	 * @see todolistdiag.ToDoListManager#getPersistanceProvider()
+	 * @see #getToDoListManager()
+	 * @generated
+	 */
+	EReference getToDoListManager_PersistanceProvider();
+
+	/**
 	 * Returns the meta object for class '{@link todolistdiag.FolderManagerListener <em>Folder Manager Listener</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -508,6 +595,49 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getFolderManagerListener();
+
+	/**
+	 * Returns the meta object for class '{@link todolistdiag.PersistenceProvider <em>Persistence Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Persistence Provider</em>'.
+	 * @see todolistdiag.PersistenceProvider
+	 * @generated
+	 */
+	EClass getPersistenceProvider();
+
+	/**
+	 * Returns the meta object for the attribute '{@link todolistdiag.PersistenceProvider#getPERSISTENCE_UNIT_NAME <em>PERSISTENCE UNIT NAME</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>PERSISTENCE UNIT NAME</em>'.
+	 * @see todolistdiag.PersistenceProvider#getPERSISTENCE_UNIT_NAME()
+	 * @see #getPersistenceProvider()
+	 * @generated
+	 */
+	EAttribute getPersistenceProvider_PERSISTENCE_UNIT_NAME();
+
+	/**
+	 * Returns the meta object for the attribute '{@link todolistdiag.PersistenceProvider#getFactory <em>Factory</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Factory</em>'.
+	 * @see todolistdiag.PersistenceProvider#getFactory()
+	 * @see #getPersistenceProvider()
+	 * @generated
+	 */
+	EAttribute getPersistenceProvider_Factory();
+
+	/**
+	 * Returns the meta object for the attribute '{@link todolistdiag.PersistenceProvider#getEntitymanager <em>Entitymanager</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Entitymanager</em>'.
+	 * @see todolistdiag.PersistenceProvider#getEntitymanager()
+	 * @see #getPersistenceProvider()
+	 * @generated
+	 */
+	EAttribute getPersistenceProvider_Entitymanager();
 
 	/**
 	 * Returns the meta object for enum '{@link todolistdiag.Status <em>Status</em>}'.
@@ -539,6 +669,28 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getFolderManagerEvent();
+
+	/**
+	 * Returns the meta object for data type '{@link javax.persistence.EntityManagerFactory <em>Entity Manager Factory</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Entity Manager Factory</em>'.
+	 * @see javax.persistence.EntityManagerFactory
+	 * @model instanceClass="javax.persistence.EntityManagerFactory"
+	 * @generated
+	 */
+	EDataType getEntityManagerFactory();
+
+	/**
+	 * Returns the meta object for data type '{@link javax.persistence.EntityManager <em>Entity Manager</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Entity Manager</em>'.
+	 * @see javax.persistence.EntityManager
+	 * @model instanceClass="javax.persistence.EntityManager"
+	 * @generated
+	 */
+	EDataType getEntityManager();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -713,6 +865,14 @@ public interface TodolistdiagPackage extends EPackage {
 		EReference TO_DO_LIST_MANAGER__TASKS = eINSTANCE.getToDoListManager_Tasks();
 
 		/**
+		 * The meta object literal for the '<em><b>Persistance Provider</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER = eINSTANCE.getToDoListManager_PersistanceProvider();
+
+		/**
 		 * The meta object literal for the '{@link todolistdiag.FolderManagerListener <em>Folder Manager Listener</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -721,6 +881,40 @@ public interface TodolistdiagPackage extends EPackage {
 		 * @generated
 		 */
 		EClass FOLDER_MANAGER_LISTENER = eINSTANCE.getFolderManagerListener();
+
+		/**
+		 * The meta object literal for the '{@link todolistdiag.impl.PersistenceProviderImpl <em>Persistence Provider</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see todolistdiag.impl.PersistenceProviderImpl
+		 * @see todolistdiag.impl.TodolistdiagPackageImpl#getPersistenceProvider()
+		 * @generated
+		 */
+		EClass PERSISTENCE_PROVIDER = eINSTANCE.getPersistenceProvider();
+
+		/**
+		 * The meta object literal for the '<em><b>PERSISTENCE UNIT NAME</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PERSISTENCE_PROVIDER__PERSISTENCE_UNIT_NAME = eINSTANCE.getPersistenceProvider_PERSISTENCE_UNIT_NAME();
+
+		/**
+		 * The meta object literal for the '<em><b>Factory</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PERSISTENCE_PROVIDER__FACTORY = eINSTANCE.getPersistenceProvider_Factory();
+
+		/**
+		 * The meta object literal for the '<em><b>Entitymanager</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PERSISTENCE_PROVIDER__ENTITYMANAGER = eINSTANCE.getPersistenceProvider_Entitymanager();
 
 		/**
 		 * The meta object literal for the '{@link todolistdiag.Status <em>Status</em>}' enum.
@@ -751,6 +945,26 @@ public interface TodolistdiagPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType FOLDER_MANAGER_EVENT = eINSTANCE.getFolderManagerEvent();
+
+		/**
+		 * The meta object literal for the '<em>Entity Manager Factory</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see javax.persistence.EntityManagerFactory
+		 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManagerFactory()
+		 * @generated
+		 */
+		EDataType ENTITY_MANAGER_FACTORY = eINSTANCE.getEntityManagerFactory();
+
+		/**
+		 * The meta object literal for the '<em>Entity Manager</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see javax.persistence.EntityManager
+		 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManager()
+		 * @generated
+		 */
+		EDataType ENTITY_MANAGER = eINSTANCE.getEntityManager();
 
 	}
 

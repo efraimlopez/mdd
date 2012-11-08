@@ -8,6 +8,8 @@ package todolistdiag.impl;
 
 import java.util.EventObject;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -65,6 +67,7 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 			case TodolistdiagPackage.TASK: return createTask();
 			case TodolistdiagPackage.FOLDER: return createFolder();
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER: return createToDoListManager();
+			case TodolistdiagPackage.PERSISTENCE_PROVIDER: return createPersistenceProvider();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -83,6 +86,10 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 				return createImportanceFromString(eDataType, initialValue);
 			case TodolistdiagPackage.FOLDER_MANAGER_EVENT:
 				return createFolderManagerEventFromString(eDataType, initialValue);
+			case TodolistdiagPackage.ENTITY_MANAGER_FACTORY:
+				return createEntityManagerFactoryFromString(eDataType, initialValue);
+			case TodolistdiagPackage.ENTITY_MANAGER:
+				return createEntityManagerFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -101,6 +108,10 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 				return convertImportanceToString(eDataType, instanceValue);
 			case TodolistdiagPackage.FOLDER_MANAGER_EVENT:
 				return convertFolderManagerEventToString(eDataType, instanceValue);
+			case TodolistdiagPackage.ENTITY_MANAGER_FACTORY:
+				return convertEntityManagerFactoryToString(eDataType, instanceValue);
+			case TodolistdiagPackage.ENTITY_MANAGER:
+				return convertEntityManagerToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -134,6 +145,16 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 	public ToDoListManager createToDoListManager() {
 		ToDoListManagerImpl toDoListManager = new ToDoListManagerImpl();
 		return toDoListManager;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PersistenceProvider createPersistenceProvider() {
+		PersistenceProviderImpl persistenceProvider = new PersistenceProviderImpl();
+		return persistenceProvider;
 	}
 
 	/**
@@ -191,6 +212,42 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 	 * @generated
 	 */
 	public String convertFolderManagerEventToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EntityManagerFactory createEntityManagerFactoryFromString(EDataType eDataType, String initialValue) {
+		return (EntityManagerFactory)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEntityManagerFactoryToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EntityManager createEntityManagerFromString(EDataType eDataType, String initialValue) {
+		return (EntityManager)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEntityManagerToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

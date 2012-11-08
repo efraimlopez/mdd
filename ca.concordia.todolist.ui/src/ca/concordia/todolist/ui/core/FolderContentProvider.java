@@ -22,8 +22,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-import ca.concordia.todolist.util.PersistenceProvider;
-
 import todolistdiag.Folder;
 import todolistdiag.FolderManagerListener;
 import todolistdiag.ToDoListManager;

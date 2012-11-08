@@ -25,11 +25,12 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import ca.concordia.todolist.util.EMFManager;
-import ca.concordia.todolist.util.PersistenceProvider;
+//import ca.concordia.todolist.util.PersistenceProvider;
 
 import todolistdiag.Folder;
 import todolistdiag.FolderManagerListener;
 import todolistdiag.Importance;
+import todolistdiag.PersistenceProvider;
 import todolistdiag.Status;
 import todolistdiag.Task;
 import todolistdiag.ToDoListManager;
@@ -46,6 +47,7 @@ import todolistdiag.TodolistdiagPackage;
  *   <li>{@link todolistdiag.impl.ToDoListManagerImpl#getFolderManagerListener <em>Folder Manager Listener</em>}</li>
  *   <li>{@link todolistdiag.impl.ToDoListManagerImpl#getFolders <em>Folders</em>}</li>
  *   <li>{@link todolistdiag.impl.ToDoListManagerImpl#getTasks <em>Tasks</em>}</li>
+ *   <li>{@link todolistdiag.impl.ToDoListManagerImpl#getPersistanceProvider <em>Persistance Provider</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,6 +94,16 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	protected EList tasks;
 
 	/**
+	 * The cached value of the '{@link #getPersistanceProvider() <em>Persistance Provider</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPersistanceProvider()
+	 * @generated
+	 * @ordered
+	 */
+	protected PersistenceProvider persistanceProvider;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -123,7 +135,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			}
 		}
 		if(rootFolder==null){
-			List<Folder> allFolders = PersistenceProvider.getInstance().getAllObjects(FolderImpl.class);
+			List<Folder> allFolders = getPersistanceProvider().getAllObjects(FolderImpl.class);
 			for(Iterator<Folder> it = allFolders.iterator(); it.hasNext(); ){
 				Folder f = it.next();
 				if(f.getParent()==null){
@@ -174,7 +186,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	public EList getFolders() {
 		if (folders == null) {
 			folders = new EObjectResolvingEList(Folder.class, this, TodolistdiagPackage.TO_DO_LIST_MANAGER__FOLDERS);
-			folders.addAll(PersistenceProvider.getInstance().getAllObjects(FolderImpl.class));
+			folders.addAll(getPersistanceProvider().getAllObjects(FolderImpl.class));
 		}
 		return folders;
 	}
@@ -186,9 +198,60 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	public EList getTasks() {
 		if (tasks == null) {
 			tasks = new EObjectResolvingEList(Task.class, this, TodolistdiagPackage.TO_DO_LIST_MANAGER__TASKS);
-			tasks.addAll(PersistenceProvider.getInstance().getAllObjects(TaskImpl.class));
+			tasks.addAll(getPersistanceProvider().getAllObjects(TaskImpl.class));
 		}
 		return tasks;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public PersistenceProvider getPersistanceProvider() {
+		if (persistanceProvider != null && persistanceProvider.eIsProxy()) {
+			InternalEObject oldPersistanceProvider = (InternalEObject)persistanceProvider;
+			persistanceProvider = (PersistenceProvider)eResolveProxy(oldPersistanceProvider);
+			if (persistanceProvider != oldPersistanceProvider) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER, oldPersistanceProvider, persistanceProvider));
+			}
+		}
+		if(persistanceProvider==null){
+			persistanceProvider = EMFManager.getInstance().getFactory().createPersistenceProvider();
+		}
+		return persistanceProvider;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PersistenceProvider basicGetPersistanceProvider() {
+		return persistanceProvider;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPersistanceProvider(PersistenceProvider newPersistanceProvider) {
+		PersistenceProvider oldPersistanceProvider = persistanceProvider;
+		persistanceProvider = newPersistanceProvider;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER, oldPersistanceProvider, persistanceProvider));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Task createTask(String name, Importance importance, Status status, String description, EList folders) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -209,7 +272,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			task.getParentFolders().add(f);
 			f.getTasks().add(task);
 		}		
-		PersistenceProvider.getInstance().persist(task);
+		getPersistanceProvider().persist(task);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -229,7 +292,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			Folder f = (Folder) o;
 			f.getTasks().add(task);
 		}
-		PersistenceProvider.getInstance().update(task);
+		getPersistanceProvider().update(task);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -248,7 +311,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			Folder f = (Folder) o;
 			f.getTasks().remove(task);
 		}
-		PersistenceProvider.getInstance().delete(task);
+		getPersistanceProvider().delete(task);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -286,7 +349,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 		Folder folder = EMFManager.getInstance().getFactory().createFolder();
 		folder.setName(folderName);
 		folder.setParent(parentFolder);
-		PersistenceProvider.getInstance().persist(folder);
+		getPersistanceProvider().persist(folder);
 		parentFolder.getSubFolders().add(folder);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
@@ -303,7 +366,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	public void editFolder(Folder folder) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		PersistenceProvider.getInstance().update(folder);
+		getPersistanceProvider().update(folder);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -319,7 +382,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		folder.getParent().getSubFolders().remove(folder);
-		PersistenceProvider.getInstance().delete(folder);
+		getPersistanceProvider().delete(folder);
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -343,6 +406,9 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				return getFolders();
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER__TASKS:
 				return getTasks();
+			case TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER:
+				if (resolve) return getPersistanceProvider();
+				return basicGetPersistanceProvider();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -369,6 +435,9 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				getTasks().clear();
 				getTasks().addAll((Collection)newValue);
 				return;
+			case TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER:
+				setPersistanceProvider((PersistenceProvider)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -392,6 +461,9 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER__TASKS:
 				getTasks().clear();
 				return;
+			case TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER:
+				setPersistanceProvider((PersistenceProvider)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -411,6 +483,8 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				return folders != null && !folders.isEmpty();
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER__TASKS:
 				return tasks != null && !tasks.isEmpty();
+			case TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER:
+				return persistanceProvider != null;
 		}
 		return super.eIsSet(featureID);
 	}

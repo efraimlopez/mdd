@@ -20,14 +20,15 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link todolistdiag.Folder#getTasks <em>Tasks</em>}</li>
  *   <li>{@link todolistdiag.Folder#getSubFolders <em>Sub Folders</em>}</li>
- *   <li>{@link todolistdiag.Folder#getName <em>Name</em>}</li>
- *   <li>{@link todolistdiag.Folder#getId <em>Id</em>}</li>
  *   <li>{@link todolistdiag.Folder#getParent <em>Parent</em>}</li>
+ *   <li>{@link todolistdiag.Folder#getId <em>Id</em>}</li>
+ *   <li>{@link todolistdiag.Folder#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getFolder()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='folderInFolder'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot folderInFolder='parent.id >= 0'"
  * @generated
  */
 public interface Folder extends EObject {
@@ -103,7 +104,7 @@ public interface Folder extends EObject {
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(long)
 	 * @see todolistdiag.TodolistdiagPackage#getFolder_Id()
-	 * @model id="true" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	long getId();
@@ -151,21 +152,5 @@ public interface Folder extends EObject {
 	 * @generated
 	 */
 	boolean hasSubFolder();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void setAsParent(Folder parentFolder);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void setAsChild(Folder childFolder);
 
 } // Folder

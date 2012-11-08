@@ -18,17 +18,18 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link todolistdiag.Task#getId <em>Id</em>}</li>
  *   <li>{@link todolistdiag.Task#getName <em>Name</em>}</li>
  *   <li>{@link todolistdiag.Task#getStatus <em>Status</em>}</li>
  *   <li>{@link todolistdiag.Task#getImportanceLevel <em>Importance Level</em>}</li>
  *   <li>{@link todolistdiag.Task#getParentFolders <em>Parent Folders</em>}</li>
  *   <li>{@link todolistdiag.Task#getDescription <em>Description</em>}</li>
- *   <li>{@link todolistdiag.Task#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getTask()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskInFolder'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskInFolder='parentFolders->select((Task = self))->size() >= 1'"
  * @generated
  */
 public interface Task extends EObject {
@@ -171,7 +172,7 @@ public interface Task extends EObject {
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(long)
 	 * @see todolistdiag.TodolistdiagPackage#getTask_Id()
-	 * @model id="true" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	long getId();

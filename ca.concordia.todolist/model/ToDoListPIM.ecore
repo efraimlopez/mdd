@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="todolistpim"
-    nsURI="http://todolistpim/1.0" nsPrefix="todolistpim">
-  <eAnnotations source="EntityTable" references="#//Folder"/>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="todolistpim" nsURI="http://todolistpim/1.0" nsPrefix="todolistpim">
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="setAsParent">
@@ -16,6 +13,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
         eType="#//Task" eOpposite="#//Task/folders"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subFolders" upperBound="-1"
+        eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Folder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
     <eOperations name="statusNotStarted"/>
@@ -40,5 +40,27 @@
     <eLiterals name="LOW"/>
     <eLiterals name="MEDIUM" value="1"/>
     <eLiterals name="HIGH" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
+    <eOperations name="createTask" eType="#//Task"/>
+    <eOperations name="deleteTask">
+      <eParameters name="task" eType="#//Task"/>
+    </eOperations>
+    <eOperations name="editTask">
+      <eParameters name="task" eType="#//Task"/>
+    </eOperations>
+    <eOperations name="createFolder" eType="#//Folder"/>
+    <eOperations name="deleteFolder">
+      <eParameters name="folder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="editFolder">
+      <eParameters name="folder" eType="#//Folder"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootFolder" lowerBound="1"
+        eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="folders" lowerBound="1"
+        upperBound="-1" eType="#//Folder"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
+        eType="#//Task"/>
   </eClassifiers>
 </ecore:EPackage>

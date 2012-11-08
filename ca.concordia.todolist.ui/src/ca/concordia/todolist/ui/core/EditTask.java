@@ -3,12 +3,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -26,6 +28,8 @@ import org.eclipse.swt.widgets.Tree;
 import todolistdiag.Folder;
 import todolistdiag.Importance;
 import todolistdiag.Status;
+import todolistdiag.Task;
+import todolistdiag.util.TodolistdiagValidator;
 import ca.concordia.todolist.util.EMFManager;
 
 
@@ -36,11 +40,8 @@ public class EditTask extends TitleAreaDialog {
 	private Combo comboStatus;
 	private CheckboxTreeViewer checkboxTreeViewer;
 	
-	private String name;
-	private String description;
-	private Importance importance;
-	private Status status;
-	private List folders;
+	private Task task;
+	private boolean okFlag = false;
 
 	/**
 	 * Create the dialog.
@@ -134,21 +135,22 @@ public class EditTask extends TitleAreaDialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		Button button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
-		button.addMouseListener(new MouseAdapter() {
+		button.addSelectionListener(new SelectionListener() {
 			@Override
-			public void mouseDown(MouseEvent e) {
-				Object[] checked = checkboxTreeViewer.getCheckedElements();
-				if(checked!=null){
-					name = textName.getText();
-					description = textDescription.getText();
-					importance = Importance.getByName(comboImportance.getText());
-					status = Status.getByName(comboStatus.getText());
-					folders = new ArrayList();
-					for(Object o : checked){
-						Folder f = (Folder) o;
-						folders.add(f);
-					}
-				}
+			public void widgetSelected(SelectionEvent e) {
+				DiagnosticChain diagnosticChain = new BasicDiagnostic();
+	          if (isValid(diagnosticChain)) {
+	        	    okFlag = true;
+		            okPressed();
+		      }else{
+		    	  Message messageDialog = new Message(EditTask.this.getShell());
+		    	  messageDialog.setMessage(Util.getErrorMessage(diagnosticChain));
+		    	  messageDialog.open();
+		      }			
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
 			}
 		});
 		createButton(parent, IDialogConstants.CANCEL_ID,
@@ -163,90 +165,65 @@ public class EditTask extends TitleAreaDialog {
 		return new Point(645, 393);
 	}
 	/**
-	 * @return
+	 * 
 	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * @return
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * @param description
-	 */
-	public void setDescription(String description) {
-		this.description = description;
+	private void preFillDialog(){
+		if(task!=null){
+			if(task.getName()!=null)
+				this.textName.setText(task.getName());
+			if(task.getDescription()!=null)
+				this.textDescription.setText(task.getDescription());
+			if(task.getImportanceLevel()!=null)
+				this.comboImportance.setText(task.getImportanceLevel().getName());
+			if(task.getStatus()!=null)
+				this.comboStatus.setText(task.getStatus().getName());
+			this.checkboxTreeViewer.setCheckedElements(task.getParentFolders().toArray());	
+		}
 	}
 	/**
 	 * @return
 	 */
-	public Importance getImportance() {
-		return importance;
+	public boolean isValid(DiagnosticChain diagnostics){
+		Task testedTask = EMFManager.getInstance().getFactory().createTask();
+		saveInput(testedTask);
+		return TodolistdiagValidator.INSTANCE.validateTask(testedTask, diagnostics, null);
 	}
-	/**
-	 * @param importance
+	 /* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 	 */
-	public void setImportance(Importance importance) {
-		this.importance = importance;
-	}
-	/**
-	 * @return
-	 */
-	public Status getStatus() {
-		return status;
-	}
-	/**
-	 * @param status
-	 */
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	/**
-	 * @return
-	 */
-	public List getFolders() {
-		return folders;
-	}
-	/**
-	 * @param folders
-	 */
-	public void setFolders(List folders) {
-		this.folders = folders;
+	@Override
+	protected void okPressed() {
+		 if(okFlag){
+			 saveInput(task);
+			 super.okPressed(); 
+		 }
 	}
 	/**
 	 * 
 	 */
-	private void preFillDialog(){
-		if(name!=null)
-			this.textName.setText(name);
-		if(description!=null)
-			this.textDescription.setText(description);
-		if(importance!=null)
-			this.comboImportance.setText(importance.getName());
-		if(status!=null)
-			this.comboStatus.setText(status.getName());
-		if(folders!=null)
-			this.checkboxTreeViewer.setCheckedElements(folders.toArray());
+	private void saveInput(Task task){
+		task.setName(textName.getText());
+		task.setImportanceLevel(Importance.getByName(comboImportance.getText()));
+		task.setStatus(Status.getByName(comboStatus.getText()));
+		task.setDescription(textDescription.getText());
+		List folders = new ArrayList();
+		Object[] checked = checkboxTreeViewer.getCheckedElements();
+		for(Object o : checked){
+			Folder f = (Folder) o;
+			folders.add(f);
+		}
+		for(Object o : task.getParentFolders()){
+			Folder f = (Folder) o;
+			f.getTasks().remove(task);
+		}
+		task.getParentFolders().removeAll(task.getParentFolders());
+		task.getParentFolders().addAll(folders);
 	}
 	/**
-	 * @return
+	 * @param task
 	 */
-	public boolean isValid(){
-		if(name==null || name.trim().isEmpty()){
-			return false;
-		}
-		if(folders==null || folders.size()<1){
-			return false;
-		}
-		return true;
+	public void setTask(Task task){
+		this.task = task;
 	}
+	
 }

@@ -1,10 +1,12 @@
 package ca.concordia.todolist.ui.core;
 
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -14,9 +16,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import todolistdiag.Folder;
+import todolistdiag.util.TodolistdiagValidator;
+import ca.concordia.todolist.util.EMFManager;
+
 public class EditFolder extends TitleAreaDialog {
 	private Text text;
-	private String folderName = null;
+
+	private Folder folder;
+	private boolean okFlag = false;
 	/**
 	 * Create the dialog.
 	 * @param parentShell
@@ -57,10 +65,22 @@ public class EditFolder extends TitleAreaDialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		Button button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
-		button.addMouseListener(new MouseAdapter() {
+		button.addSelectionListener(new SelectionListener() {
 			@Override
-			public void mouseDown(MouseEvent e) {
-				folderName = text.getText();
+			public void widgetSelected(SelectionEvent e) {
+				DiagnosticChain diagnosticChain = new BasicDiagnostic();
+	          if (isValid(diagnosticChain)) {
+	        	    okFlag = true;
+		            okPressed();
+		      }else{
+		    	  Message messageDialog = new Message(EditFolder.this.getShell());
+		    	  messageDialog.setMessage(Util.getErrorMessage(diagnosticChain));
+		    	  messageDialog.open();
+		      }			
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
 			}
 		});
 		createButton(parent, IDialogConstants.CANCEL_ID,
@@ -75,30 +95,40 @@ public class EditFolder extends TitleAreaDialog {
 		return new Point(450, 300);
 	}
 	
-	/**
-	 * returns the folder name
-	 * @return
-	 */
-	public String getFolderName(){
-		return folderName;
-	}
-	/**
-	 * @param name
-	 */
-	public void setFolderName(String name){
-		this.folderName = name;
-	}
 	private void preFillDialog(){
-		if(folderName!=null)
-			this.text.setText(folderName);
+		if(folder!=null){
+			if(folder.getName()!=null)
+				this.text.setText(folder.getName());	
+		}
 	}
 	/**
 	 * @return
 	 */
-	public boolean isValid(){
-		if(this.folderName==null || this.folderName.trim().isEmpty()){
-			return false;
-		}
-		return true;
+	public boolean isValid(DiagnosticChain diagnostics){
+		Folder testedFolder = EMFManager.getInstance().getFactory().createFolder();
+		saveInput(testedFolder);
+		return TodolistdiagValidator.INSTANCE.validateFolder(testedFolder, diagnostics, null);
+	}
+	 /* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+	 */
+	@Override
+	protected void okPressed() {
+		 if(okFlag){
+			 saveInput(folder);
+			 super.okPressed(); 
+		 }
+	}
+	/**
+	 * 
+	 */
+	private void saveInput(Folder folder){
+		folder.setName(text.getText());
+	}
+	/**
+	 * @param folder
+	 */
+	public void setFolder(Folder folder){
+		this.folder = folder;
 	}
 }

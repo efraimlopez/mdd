@@ -23,11 +23,13 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link todolistdiag.ToDoListManager#getFolderManagerListener <em>Folder Manager Listener</em>}</li>
  *   <li>{@link todolistdiag.ToDoListManager#getFolders <em>Folders</em>}</li>
  *   <li>{@link todolistdiag.ToDoListManager#getTasks <em>Tasks</em>}</li>
+ *   <li>{@link todolistdiag.ToDoListManager#getPersistanceProvider <em>Persistance Provider</em>}</li>
  * </ul>
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getToDoListManager()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueFolderId uniqueTaskId'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueFolderId='folders->isUnique(id)' uniqueTaskId='tasks->isUnique(id)'"
  * @generated
  */
 public interface ToDoListManager extends EObject {
@@ -106,6 +108,40 @@ public interface ToDoListManager extends EObject {
 	List getTasks();
 
 	/**
+	 * Returns the value of the '<em><b>Persistance Provider</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Persistance Provider</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Persistance Provider</em>' reference.
+	 * @see #setPersistanceProvider(PersistenceProvider)
+	 * @see todolistdiag.TodolistdiagPackage#getToDoListManager_PersistanceProvider()
+	 * @model required="true"
+	 * @generated
+	 */
+	PersistenceProvider getPersistanceProvider();
+
+	/**
+	 * Sets the value of the '{@link todolistdiag.ToDoListManager#getPersistanceProvider <em>Persistance Provider</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Persistance Provider</em>' reference.
+	 * @see #getPersistanceProvider()
+	 * @generated
+	 */
+	void setPersistanceProvider(PersistenceProvider value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true" foldersMany="false"
+	 * @generated
+	 */
+	Task createTask(String name, Importance importance, Status status, String description, EList folders);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model required="true" foldersMany="false"
@@ -150,7 +186,7 @@ public interface ToDoListManager extends EObject {
 	 * @model required="true"
 	 * @generated
 	 */
-	Folder createFolder(String folderName, Folder parentFolder);
+	Folder createFolder(String name, Folder parentFolder);
 
 	/**
 	 * <!-- begin-user-doc -->
