@@ -10,10 +10,11 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="taskInFolder"/>
+      <details key="constraints" value="taskInFolder taskName"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="taskInFolder" value="parentFolders->select((Task = self))->size() >= 1"/>
+      <details key="taskInFolder" value="self.parentFolders->size() >= 1"/>
+      <details key="taskName" value="self.name &lt;> null"/>
     </eAnnotations>
     <eOperations name="statusNotStarted"/>
     <eOperations name="statusInProgress"/>
@@ -40,10 +41,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="folderInFolder"/>
+      <details key="constraints" value="uniqueNamesSubFolders folderName uniqueNames"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="folderInFolder" value="parent.id >= 0"/>
+      <details key="uniqueNamesSubFolders" value="self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 &lt;> f2 implies f1.name &lt;> f2.name)"/>
+      <details key="folderName" value="self.name &lt;> null"/>
+      <details key="uniqueNames" value="self.tasks->forAll(t1 : Task, t2 : Task | t1 &lt;> t2 implies t1.name &lt;> t2.name)"/>
     </eAnnotations>
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
@@ -61,11 +64,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="uniqueFolderId uniqueTaskId"/>
+      <details key="constraints" value="rootFolderParent uniqueTaskId uniqueFolderId"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="uniqueFolderId" value="folders->isUnique(id)"/>
+      <details key="rootFolderParent" value="self.rootFolder.parent = null"/>
       <details key="uniqueTaskId" value="tasks->isUnique(id)"/>
+      <details key="uniqueFolderId" value="self.folders->isUnique(id)"/>
     </eAnnotations>
     <eOperations name="createTask" lowerBound="1" eType="#//Task">
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

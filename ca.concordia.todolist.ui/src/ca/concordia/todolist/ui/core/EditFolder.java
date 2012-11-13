@@ -106,6 +106,7 @@ public class EditFolder extends TitleAreaDialog {
 	 */
 	public boolean isValid(DiagnosticChain diagnostics){
 		Folder testedFolder = EMFManager.getInstance().getFactory().createFolder();
+		testedFolder.setParent(folder.getParent());
 		saveInput(testedFolder);
 		return TodolistdiagValidator.INSTANCE.validateFolder(testedFolder, diagnostics, null);
 	}

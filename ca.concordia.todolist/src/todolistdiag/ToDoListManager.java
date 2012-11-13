@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getToDoListManager()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueFolderId uniqueTaskId'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueFolderId='folders->isUnique(id)' uniqueTaskId='tasks->isUnique(id)'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='rootFolderParent uniqueTaskId uniqueFolderId'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot rootFolderParent='self.rootFolder.parent = null' uniqueTaskId='tasks->isUnique(id)' uniqueFolderId='self.folders->isUnique(id)'"
  * @generated
  */
 public interface ToDoListManager extends EObject {

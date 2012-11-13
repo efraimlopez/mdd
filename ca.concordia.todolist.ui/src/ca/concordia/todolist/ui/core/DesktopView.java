@@ -170,6 +170,7 @@ public class DesktopView extends ApplicationWindow {
 				Folder parentFolder = (Folder)selection.getFirstElement();
 				EditFolder dialog = new EditFolder(DesktopView.this.getShell());
 				Folder mementoFolder = EMFManager.getInstance().getFactory().createFolder();
+				mementoFolder.setParent(parentFolder);
 				dialog.setFolder(mementoFolder);
 				if(dialog.open()==Window.OK)
 					EMFManager.getInstance()

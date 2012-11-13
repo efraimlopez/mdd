@@ -672,19 +672,19 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "taskInFolder"
+			 "constraints", "taskInFolder taskName"
 		   });			
 		addAnnotation
 		  (folderEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "folderInFolder"
+			 "constraints", "uniqueNamesSubFolders folderName uniqueNames"
 		   });				
 		addAnnotation
 		  (toDoListManagerEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "uniqueFolderId uniqueTaskId"
+			 "constraints", "rootFolderParent uniqueTaskId uniqueFolderId"
 		   });						
 	}
 
@@ -700,20 +700,24 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "taskInFolder", "parentFolders->select((Task = self))->size() >= 1"
+			 "taskInFolder", "self.parentFolders->size() >= 1",
+			 "taskName", "self.name <> null"
 		   });			
 		addAnnotation
 		  (folderEClass, 
 		   source, 
 		   new String[] {
-			 "folderInFolder", "parent.id >= 0"
+			 "uniqueNamesSubFolders", "self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)",
+			 "folderName", "self.name <> null",
+			 "uniqueNames", "self.tasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)"
 		   });				
 		addAnnotation
 		  (toDoListManagerEClass, 
 		   source, 
 		   new String[] {
-			 "uniqueFolderId", "folders->isUnique(id)",
-			 "uniqueTaskId", "tasks->isUnique(id)"
+			 "rootFolderParent", "self.rootFolder.parent = null",
+			 "uniqueTaskId", "tasks->isUnique(id)",
+			 "uniqueFolderId", "self.folders->isUnique(id)"
 		   });					
 	}
 

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/ca.concordia.todolist/src"
-    modelPluginID="ca.concordia.todolist" modelName="ToDoList" suppressEMFTypes="true"
-    featureMapWrapperInterface="" featureMapWrapperInternalInterface="" importerID="org.eclipse.emf.importer.ecore"
-    copyrightFields="false" packedEnums="true">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/ca.concordia.todolist/src" modelPluginID="ca.concordia.todolist"
+    modelName="ToDoListDiag" suppressEMFTypes="true" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="7.0" copyrightFields="false">
   <foreignModel>ToDoListDiag.ecore</foreignModel>
   <genPackages prefix="Todolistdiag" resource="XML" disposableProviderFactory="true"
       ecorePackage="ToDoListDiag.ecore#/">
@@ -22,7 +20,7 @@
     <genDataTypes ecoreDataType="ToDoListDiag.ecore#//EntityManagerFactory"/>
     <genDataTypes ecoreDataType="ToDoListDiag.ecore#//EntityManager"/>
     <genClasses ecoreClass="ToDoListDiag.ecore#//Task">
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/status"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Task/importanceLevel"/>
@@ -36,7 +34,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/tasks"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/subFolders"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ToDoListDiag.ecore#//Folder/parent"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ToDoListDiag.ecore#//Folder/name"/>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//Folder/hasSubFolder"/>
     </genClasses>
@@ -51,6 +49,7 @@
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/importance"/>
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/status"/>
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/description"/>
+        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createTask/folders"/>
       </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/editTask">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/editTask/task"/>
@@ -66,7 +65,6 @@
       </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/createFolder">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createFolder/name"/>
-        <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/createFolder/parentFolder"/>
       </genOperations>
       <genOperations ecoreOperation="ToDoListDiag.ecore#//ToDoListManager/editFolder">
         <genParameters ecoreParameter="ToDoListDiag.ecore#//ToDoListManager/editFolder/folder"/>

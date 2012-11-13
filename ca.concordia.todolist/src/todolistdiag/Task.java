@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getTask()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskInFolder'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskInFolder='parentFolders->select((Task = self))->size() >= 1'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskInFolder taskName'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskInFolder='self.parentFolders->size() >= 1' taskName='self.name <> null'"
  * @generated
  */
 public interface Task extends EObject {

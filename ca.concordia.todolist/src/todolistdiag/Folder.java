@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getFolder()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='folderInFolder'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot folderInFolder='parent.id >= 0'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueNamesSubFolders folderName uniqueNames'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueNamesSubFolders='self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)' folderName='self.name <> null' uniqueNames='self.tasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)'"
  * @generated
  */
 public interface Folder extends EObject {
