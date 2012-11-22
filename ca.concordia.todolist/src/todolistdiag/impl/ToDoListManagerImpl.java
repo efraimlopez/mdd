@@ -8,6 +8,8 @@ package todolistdiag.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Iterator;
@@ -387,6 +389,62 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
 			listener.folderDeleted(new EventObject(folder));
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void sortTasks(EList tasks, String sortingType, Folder folder) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public void sortTasks(List tasks, String sortingType,Folder folder) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		//String type = sortingType;
+		if(sortingType.equals("Name")){
+			Collections.sort(tasks, new Comparator<Task>() {
+
+				@Override
+				public int compare(Task t1, Task t2) {
+				return t1.getName().compareTo(t2.getName());
+				}
+				
+			});
+		}
+		if(sortingType.equals("Status")){
+			Collections.sort(tasks, new Comparator<Task>() {
+
+				@Override
+				public int compare(Task t1, Task t2) {
+				return t2.getStatus().getValue()-t1.getStatus().getValue();
+				}
+				
+			});
+		}
+		if(sortingType.equals("Importance")){
+			Collections.sort(tasks, new Comparator<Task>() {
+
+				@Override
+				public int compare(Task t1, Task t2) {
+				return t2.getImportanceLevel().getValue()-t1.getImportanceLevel().getValue();
+				}
+				
+			});
+		}
+		getPersistanceProvider().update(folder);
+		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
+			FolderManagerListener listener = (FolderManagerListener) it.next();
+			listener.folderModified(null);
 		}
 	}
 

@@ -64,12 +64,13 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="rootFolderParent uniqueTaskId uniqueFolderId"/>
+      <details key="constraints" value="rootFolderParent uniqueTaskId uniqueFolderId rootIsPartOfSet"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="rootFolderParent" value="self.rootFolder.parent = null"/>
       <details key="uniqueTaskId" value="tasks->isUnique(id)"/>
       <details key="uniqueFolderId" value="self.folders->isUnique(id)"/>
+      <details key="rootIsPartOfSet" value="self.folders->includes(self.rootFolder)"/>
     </eAnnotations>
     <eOperations name="createTask" lowerBound="1" eType="#//Task">
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -98,6 +99,14 @@
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
     <eOperations name="deleteFolder">
+      <eParameters name="folder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="sortTasks" ordered="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="pre_condition" value="folder.tasks->size() > 1"/>
+      </eAnnotations>
+      <eParameters name="tasks" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
+      <eParameters name="sortingType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootFolder" lowerBound="1"

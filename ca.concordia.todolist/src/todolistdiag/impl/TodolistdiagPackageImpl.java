@@ -592,6 +592,11 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		op = addEOperation(toDoListManagerEClass, null, "deleteFolder");
 		addEParameter(op, this.getFolder(), "folder", 0, 1);
 
+		op = addEOperation(toDoListManagerEClass, null, "sortTasks");
+		addEParameter(op, ecorePackage.getEEList(), "tasks", 0, 1);
+		addEParameter(op, ecorePackage.getEString(), "sortingType", 0, 1);
+		addEParameter(op, this.getFolder(), "folder", 0, 1);
+
 		initEClass(folderManagerListenerEClass, FolderManagerListener.class, "FolderManagerListener", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(folderManagerListenerEClass, null, "folderAdded");
@@ -684,8 +689,8 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (toDoListManagerEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "rootFolderParent uniqueTaskId uniqueFolderId"
-		   });						
+			 "constraints", "rootFolderParent uniqueTaskId uniqueFolderId rootIsPartOfSet"
+		   });							
 	}
 
 	/**
@@ -717,7 +722,14 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		   new String[] {
 			 "rootFolderParent", "self.rootFolder.parent = null",
 			 "uniqueTaskId", "tasks->isUnique(id)",
-			 "uniqueFolderId", "self.folders->isUnique(id)"
+			 "uniqueFolderId", "self.folders->isUnique(id)",
+			 "rootIsPartOfSet", "self.folders->includes(self.rootFolder)"
+		   });		
+		addAnnotation
+		  ((EOperation)toDoListManagerEClass.getEOperations().get(8), 
+		   source, 
+		   new String[] {
+			 "pre_condition", "folder.tasks->size() > 1"
 		   });					
 	}
 
@@ -735,7 +747,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		   new String[] {
 			 "kind", "attribute",
 			 "namespace", ""
-		   });							
+		   });								
 	}
 
 } //TodolistdiagPackageImpl

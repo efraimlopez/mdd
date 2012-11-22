@@ -305,6 +305,7 @@ public class TodolistdiagValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validateToDoListManager_rootFolderParent(toDoListManager, diagnostics, context);
 		if (result || diagnostics != null) result &= validateToDoListManager_uniqueTaskId(toDoListManager, diagnostics, context);
 		if (result || diagnostics != null) result &= validateToDoListManager_uniqueFolderId(toDoListManager, diagnostics, context);
+		if (result || diagnostics != null) result &= validateToDoListManager_rootIsPartOfSet(toDoListManager, diagnostics, context);
 		return result;
 	}
 
@@ -353,6 +354,32 @@ public class TodolistdiagValidator extends EObjectValidator {
 						 DIAGNOSTIC_SOURCE,
 						 0,
 						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "uniqueFolderId", getObjectLabel(toDoListManager, context) }),
+						 new Object[] { toDoListManager }));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the rootIsPartOfSet constraint of '<em>To Do List Manager</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateToDoListManager_rootIsPartOfSet(ToDoListManager toDoListManager, DiagnosticChain diagnostics, Map context) {
+		// TODO implement the constraint
+		// -> specify the condition that violates the constraint
+		// -> verify the diagnostic details, including severity, code, and message
+		// Ensure that you remove @generated or mark it @generated NOT
+		if (false) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "rootIsPartOfSet", getObjectLabel(toDoListManager, context) }),
 						 new Object[] { toDoListManager }));
 			}
 			return false;

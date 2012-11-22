@@ -1,6 +1,7 @@
 package ca.concordia.todolist.ui.core;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -65,6 +66,19 @@ public class DesktopView extends ApplicationWindow {
 	 * action that allows to remove a task
 	 */
 	private Action removeTaskAction;
+	//added by salman
+	/**
+	 * action that allows to sort tasks by their name
+	 */
+	private Action sortNameTasksAction;
+	/**
+	 * action that allows to sort tasks by their Status
+	 */
+	private Action sortStatusTasksAction;
+	/**
+	 * action that allows to sort tasks by their Importance level
+	 */
+	private Action sortImportanceTasksAction;
 	/**
 	 * the table being managed by the tableviewer
 	 */
@@ -254,6 +268,48 @@ public class DesktopView extends ApplicationWindow {
 				EMFManager.getInstance().getToDoListManager().deleteTask(task);
 			}
 		};
+		//added by Salman
+		sortNameTasksAction = new Action() {
+			@Override
+			public String getText(){
+				return "Sort tasks by name";
+			}
+			@Override
+			public void run(){
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				List<Task> tasks = folder.getTasks();
+				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Name",folder);
+			}
+		};
+		//added by Salman
+		sortStatusTasksAction = new Action() {
+			@Override
+			public String getText(){
+				return "Sort tasks by status";
+			}
+			@Override
+			public void run(){
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				List<Task> tasks = folder.getTasks();
+				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Status",folder);
+			}
+		};
+		//added by Salman
+		sortImportanceTasksAction = new Action() {
+			@Override
+			public String getText(){
+				return "Sort tasks by Importance";
+			}
+			@Override
+			public void run(){
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				List<Task> tasks = folder.getTasks();
+				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Importance",folder);
+			}
+		};
 	}
 
 	/**
@@ -287,6 +343,12 @@ public class DesktopView extends ApplicationWindow {
 						manager.add(addFolderAction);
 						manager.add(editFolderAction);
 						manager.add(removeFolderAction);
+						//added by Salman
+						if(folder.getTasks() != null){
+							manager.add(sortNameTasksAction);
+							manager.add(sortStatusTasksAction);
+							manager.add(sortImportanceTasksAction);
+						}
 					}
 				}
 			}

@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getToDoListManager()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='rootFolderParent uniqueTaskId uniqueFolderId'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot rootFolderParent='self.rootFolder.parent = null' uniqueTaskId='tasks->isUnique(id)' uniqueFolderId='self.folders->isUnique(id)'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='rootFolderParent uniqueTaskId uniqueFolderId rootIsPartOfSet'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot rootFolderParent='self.rootFolder.parent = null' uniqueTaskId='tasks->isUnique(id)' uniqueFolderId='self.folders->isUnique(id)' rootIsPartOfSet='self.folders->includes(self.rootFolder)'"
  * @generated
  */
 public interface ToDoListManager extends EObject {
@@ -203,5 +203,28 @@ public interface ToDoListManager extends EObject {
 	 * @generated
 	 */
 	void deleteFolder(Folder folder);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model tasksMany="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_condition='folder.tasks->size() > 1'"
+	 * @generated
+	 */
+	void sortTasks(EList tasks, String sortingType, Folder folder);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model many="false" tasksMany="false"
+	 * 
+	 */
+	void sortTasks(List tasks, String sortingType, Folder folder);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model many="false" tasksMany="false"
+	 */
 
 } // ToDoListManager
