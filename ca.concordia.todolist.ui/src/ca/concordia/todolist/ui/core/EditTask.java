@@ -1,5 +1,6 @@
 package ca.concordia.todolist.ui.core;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import todolistdiag.Folder;
 import todolistdiag.Importance;
 import todolistdiag.Status;
 import todolistdiag.Task;
+import todolistdiag.TaskFolderOrder;
 import todolistdiag.util.TodolistdiagValidator;
 import ca.concordia.todolist.util.EMFManager;
 
@@ -177,7 +179,7 @@ public class EditTask extends TitleAreaDialog {
 				this.comboImportance.setText(task.getImportanceLevel().getName());
 			if(task.getStatus()!=null)
 				this.comboStatus.setText(task.getStatus().getName());
-			this.checkboxTreeViewer.setCheckedElements(task.getParentFolders().toArray());	
+			this.checkboxTreeViewer.setCheckedElements(task.getAssociatedFolders().toArray());	
 		}
 	}
 	/**
@@ -202,22 +204,20 @@ public class EditTask extends TitleAreaDialog {
 	 * 
 	 */
 	private void saveInput(Task task){
+		task.setId(this.task.getId());
 		task.setName(textName.getText());
 		task.setImportanceLevel(Importance.getByName(comboImportance.getText()));
 		task.setStatus(Status.getByName(comboStatus.getText()));
 		task.setDescription(textDescription.getText());
-		List folders = new ArrayList();
-		Object[] checked = checkboxTreeViewer.getCheckedElements();
+		List checked = Arrays.asList(checkboxTreeViewer.getCheckedElements());
+		task.getOrderedTasks().removeAll(task.getOrderedTasks());
 		for(Object o : checked){
 			Folder f = (Folder) o;
-			folders.add(f);
+			TaskFolderOrder tf = EMFManager.getInstance().getFactory().createTaskFolderOrder();
+			tf.setFolder(f);
+			tf.setTask(task);
+			task.getOrderedTasks().add(tf);
 		}
-		for(Object o : task.getParentFolders()){
-			Folder f = (Folder) o;
-			f.getTasks().remove(task);
-		}
-		task.getParentFolders().removeAll(task.getParentFolders());
-		task.getParentFolders().addAll(folders);
 	}
 	/**
 	 * @param task

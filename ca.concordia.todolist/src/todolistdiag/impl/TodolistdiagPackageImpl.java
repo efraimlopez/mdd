@@ -25,8 +25,10 @@ import todolistdiag.Folder;
 import todolistdiag.FolderManagerListener;
 import todolistdiag.Importance;
 import todolistdiag.PersistenceProvider;
+import todolistdiag.SortingType;
 import todolistdiag.Status;
 import todolistdiag.Task;
+import todolistdiag.TaskFolderOrder;
 import todolistdiag.ToDoListManager;
 import todolistdiag.TodolistdiagFactory;
 import todolistdiag.TodolistdiagPackage;
@@ -79,6 +81,13 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass taskFolderOrderEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum statusEEnum = null;
 
 	/**
@@ -87,6 +96,13 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * @generated
 	 */
 	private EEnum importanceEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum sortingTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -220,8 +236,8 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTask_ParentFolders() {
-		return (EReference)taskEClass.getEStructuralFeatures().get(4);
+	public EAttribute getTask_Description() {
+		return (EAttribute)taskEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -229,8 +245,8 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTask_Description() {
-		return (EAttribute)taskEClass.getEStructuralFeatures().get(5);
+	public EReference getTask_OrderedTasks() {
+		return (EReference)taskEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -256,7 +272,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFolder_Tasks() {
+	public EReference getFolder_SubFolders() {
 		return (EReference)folderEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -265,25 +281,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFolder_SubFolders() {
-		return (EReference)folderEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getFolder_Name() {
-		return (EAttribute)folderEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getFolder_Id() {
 		return (EAttribute)folderEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -292,8 +290,26 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getFolder_OrderedTasks() {
+		return (EReference)folderEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFolder_Id() {
+		return (EAttribute)folderEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getFolder_Parent() {
-		return (EReference)folderEClass.getEStructuralFeatures().get(2);
+		return (EReference)folderEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -400,6 +416,51 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTaskFolderOrder() {
+		return taskFolderOrderEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTaskFolderOrder_Task() {
+		return (EReference)taskFolderOrderEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTaskFolderOrder_Folder() {
+		return (EReference)taskFolderOrderEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTaskFolderOrder_Id() {
+		return (EAttribute)taskFolderOrderEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTaskFolderOrder_TaskPosition() {
+		return (EAttribute)taskFolderOrderEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getStatus() {
 		return statusEEnum;
 	}
@@ -411,6 +472,15 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 */
 	public EEnum getImportance() {
 		return importanceEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getSortingType() {
+		return sortingTypeEEnum;
 	}
 
 	/**
@@ -473,15 +543,15 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		createEAttribute(taskEClass, TASK__NAME);
 		createEAttribute(taskEClass, TASK__STATUS);
 		createEAttribute(taskEClass, TASK__IMPORTANCE_LEVEL);
-		createEReference(taskEClass, TASK__PARENT_FOLDERS);
 		createEAttribute(taskEClass, TASK__DESCRIPTION);
+		createEReference(taskEClass, TASK__ORDERED_TASKS);
 
 		folderEClass = createEClass(FOLDER);
-		createEReference(folderEClass, FOLDER__TASKS);
 		createEReference(folderEClass, FOLDER__SUB_FOLDERS);
 		createEReference(folderEClass, FOLDER__PARENT);
 		createEAttribute(folderEClass, FOLDER__ID);
 		createEAttribute(folderEClass, FOLDER__NAME);
+		createEReference(folderEClass, FOLDER__ORDERED_TASKS);
 
 		toDoListManagerEClass = createEClass(TO_DO_LIST_MANAGER);
 		createEReference(toDoListManagerEClass, TO_DO_LIST_MANAGER__ROOT_FOLDER);
@@ -497,9 +567,16 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		createEAttribute(persistenceProviderEClass, PERSISTENCE_PROVIDER__FACTORY);
 		createEAttribute(persistenceProviderEClass, PERSISTENCE_PROVIDER__ENTITYMANAGER);
 
+		taskFolderOrderEClass = createEClass(TASK_FOLDER_ORDER);
+		createEReference(taskFolderOrderEClass, TASK_FOLDER_ORDER__TASK);
+		createEReference(taskFolderOrderEClass, TASK_FOLDER_ORDER__FOLDER);
+		createEAttribute(taskFolderOrderEClass, TASK_FOLDER_ORDER__ID);
+		createEAttribute(taskFolderOrderEClass, TASK_FOLDER_ORDER__TASK_POSITION);
+
 		// Create enums
 		statusEEnum = createEEnum(STATUS);
 		importanceEEnum = createEEnum(IMPORTANCE);
+		sortingTypeEEnum = createEEnum(SORTING_TYPE);
 
 		// Create data types
 		folderManagerEventEDataType = createEDataType(FOLDER_MANAGER_EVENT);
@@ -538,8 +615,8 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		initEAttribute(getTask_Name(), ecorePackage.getEString(), "name", null, 1, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_Status(), this.getStatus(), "status", null, 1, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_ImportanceLevel(), this.getImportance(), "importanceLevel", null, 1, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTask_ParentFolders(), this.getFolder(), this.getFolder_Tasks(), "parentFolders", null, 1, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_Description(), ecorePackage.getEString(), "description", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTask_OrderedTasks(), this.getTaskFolderOrder(), this.getTaskFolderOrder_Task(), "orderedTasks", null, 1, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(taskEClass, null, "statusNotStarted");
 
@@ -547,14 +624,20 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 
 		addEOperation(taskEClass, null, "statusDone");
 
+		addEOperation(taskEClass, ecorePackage.getEEList(), "getAssociatedFolders", 0, -1);
+
 		initEClass(folderEClass, Folder.class, "Folder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFolder_Tasks(), this.getTask(), this.getTask_ParentFolders(), "tasks", null, 0, -1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFolder_SubFolders(), this.getFolder(), null, "subFolders", null, 0, -1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFolder_Parent(), this.getFolder(), null, "parent", null, 0, 1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getFolder_Id(), ecorePackage.getELong(), "id", null, 1, 1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getFolder_Name(), ecorePackage.getEString(), "name", null, 1, 1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFolder_OrderedTasks(), this.getTaskFolderOrder(), this.getTaskFolderOrder_Folder(), "orderedTasks", null, 0, -1, Folder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(folderEClass, ecorePackage.getEBoolean(), "hasSubFolder", 0, 1);
+
+		addEOperation(folderEClass, ecorePackage.getEEList(), "getAssociatedTasks", 0, -1);
+
+		addEOperation(folderEClass, ecorePackage.getEEList(), "getOrderedTaskInOrder", 0, -1);
 
 		initEClass(toDoListManagerEClass, ToDoListManager.class, "ToDoListManager", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getToDoListManager_RootFolder(), this.getFolder(), null, "rootFolder", null, 1, 1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -572,6 +655,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 
 		op = addEOperation(toDoListManagerEClass, null, "editTask");
 		addEParameter(op, this.getTask(), "task", 0, 1);
+		addEParameter(op, this.getTask(), "newInfo", 0, 1);
 
 		op = addEOperation(toDoListManagerEClass, null, "deleteTask");
 		addEParameter(op, this.getTask(), "task", 0, 1);
@@ -593,9 +677,13 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		addEParameter(op, this.getFolder(), "folder", 0, 1);
 
 		op = addEOperation(toDoListManagerEClass, null, "sortTasks");
-		addEParameter(op, ecorePackage.getEEList(), "tasks", 0, 1);
-		addEParameter(op, ecorePackage.getEString(), "sortingType", 0, 1);
+		addEParameter(op, this.getSortingType(), "sortingType", 0, 1);
 		addEParameter(op, this.getFolder(), "folder", 0, 1);
+
+		op = addEOperation(toDoListManagerEClass, null, "moveTask");
+		addEParameter(op, this.getTask(), "task", 0, 1);
+		addEParameter(op, this.getFolder(), "folder", 0, 1);
+		addEParameter(op, ecorePackage.getEBoolean(), "up", 0, 1);
 
 		initEClass(folderManagerListenerEClass, FolderManagerListener.class, "FolderManagerListener", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -629,6 +717,12 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		op = addEOperation(persistenceProviderEClass, this.getFolder(), "getAllObjects", 0, -1);
 		addEParameter(op, ecorePackage.getEClass(), "entityType", 0, 1);
 
+		initEClass(taskFolderOrderEClass, TaskFolderOrder.class, "TaskFolderOrder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTaskFolderOrder_Task(), this.getTask(), this.getTask_OrderedTasks(), "task", null, 1, 1, TaskFolderOrder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTaskFolderOrder_Folder(), this.getFolder(), this.getFolder_OrderedTasks(), "folder", null, 1, 1, TaskFolderOrder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTaskFolderOrder_Id(), ecorePackage.getELong(), "id", null, 1, 1, TaskFolderOrder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTaskFolderOrder_TaskPosition(), ecorePackage.getELong(), "taskPosition", null, 1, 1, TaskFolderOrder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize enums and add enum literals
 		initEEnum(statusEEnum, Status.class, "Status");
 		addEEnumLiteral(statusEEnum, Status.NOT_STARTED_LITERAL);
@@ -639,6 +733,11 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		addEEnumLiteral(importanceEEnum, Importance.LOW_LITERAL);
 		addEEnumLiteral(importanceEEnum, Importance.MEDIUM_LITERAL);
 		addEEnumLiteral(importanceEEnum, Importance.HIGH_LITERAL);
+
+		initEEnum(sortingTypeEEnum, SortingType.class, "SortingType");
+		addEEnumLiteral(sortingTypeEEnum, SortingType.BY_NAME_LITERAL);
+		addEEnumLiteral(sortingTypeEEnum, SortingType.BY_STATUS_LITERAL);
+		addEEnumLiteral(sortingTypeEEnum, SortingType.BY_IMPORTANCE_LITERAL);
 
 		// Initialize data types
 		initEDataType(folderManagerEventEDataType, EventObject.class, "FolderManagerEvent", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
@@ -677,13 +776,13 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "taskInFolder taskName"
+			 "constraints", "taskName"
 		   });			
 		addAnnotation
 		  (folderEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "uniqueNamesSubFolders folderName uniqueNames"
+			 "constraints", "uniqueNamesSubFolders folderName"
 		   });				
 		addAnnotation
 		  (toDoListManagerEClass, 
@@ -705,7 +804,6 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "taskInFolder", "self.parentFolders->size() >= 1",
 			 "taskName", "self.name <> null"
 		   });			
 		addAnnotation
@@ -713,8 +811,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		   source, 
 		   new String[] {
 			 "uniqueNamesSubFolders", "self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)",
-			 "folderName", "self.name <> null",
-			 "uniqueNames", "self.tasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)"
+			 "folderName", "self.name <> null"
 		   });				
 		addAnnotation
 		  (toDoListManagerEClass, 
@@ -724,13 +821,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 			 "uniqueTaskId", "tasks->isUnique(id)",
 			 "uniqueFolderId", "self.folders->isUnique(id)",
 			 "rootIsPartOfSet", "self.folders->includes(self.rootFolder)"
-		   });		
-		addAnnotation
-		  ((EOperation)toDoListManagerEClass.getEOperations().get(8), 
-		   source, 
-		   new String[] {
-			 "pre_condition", "folder.tasks->size() > 1"
-		   });					
+		   });						
 	}
 
 	/**
@@ -747,7 +838,14 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		   new String[] {
 			 "kind", "attribute",
 			 "namespace", ""
-		   });								
+		   });									
+		addAnnotation
+		  (getTaskFolderOrder_Folder(), 
+		   source, 
+		   new String[] {
+			 "name", "folder",
+			 "namespace", ""
+		   });
 	}
 
 } //TodolistdiagPackageImpl

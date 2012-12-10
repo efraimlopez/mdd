@@ -68,6 +68,7 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 			case TodolistdiagPackage.FOLDER: return createFolder();
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER: return createToDoListManager();
 			case TodolistdiagPackage.PERSISTENCE_PROVIDER: return createPersistenceProvider();
+			case TodolistdiagPackage.TASK_FOLDER_ORDER: return createTaskFolderOrder();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -84,6 +85,8 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 				return createStatusFromString(eDataType, initialValue);
 			case TodolistdiagPackage.IMPORTANCE:
 				return createImportanceFromString(eDataType, initialValue);
+			case TodolistdiagPackage.SORTING_TYPE:
+				return createSortingTypeFromString(eDataType, initialValue);
 			case TodolistdiagPackage.FOLDER_MANAGER_EVENT:
 				return createFolderManagerEventFromString(eDataType, initialValue);
 			case TodolistdiagPackage.ENTITY_MANAGER_FACTORY:
@@ -106,6 +109,8 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 				return convertStatusToString(eDataType, instanceValue);
 			case TodolistdiagPackage.IMPORTANCE:
 				return convertImportanceToString(eDataType, instanceValue);
+			case TodolistdiagPackage.SORTING_TYPE:
+				return convertSortingTypeToString(eDataType, instanceValue);
 			case TodolistdiagPackage.FOLDER_MANAGER_EVENT:
 				return convertFolderManagerEventToString(eDataType, instanceValue);
 			case TodolistdiagPackage.ENTITY_MANAGER_FACTORY:
@@ -162,6 +167,16 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TaskFolderOrder createTaskFolderOrder() {
+		TaskFolderOrderImpl taskFolderOrder = new TaskFolderOrderImpl();
+		return taskFolderOrder;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Status createStatusFromString(EDataType eDataType, String initialValue) {
 		Status result = Status.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -194,6 +209,26 @@ public class TodolistdiagFactoryImpl extends EFactoryImpl implements Todolistdia
 	 * @generated
 	 */
 	public String convertImportanceToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SortingType createSortingTypeFromString(EDataType eDataType, String initialValue) {
+		SortingType result = SortingType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertSortingTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

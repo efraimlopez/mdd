@@ -1,7 +1,6 @@
 package ca.concordia.todolist.ui.core;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -17,6 +16,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,8 +29,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
 
 import todolistdiag.Folder;
+import todolistdiag.SortingType;
 import todolistdiag.Task;
 import ca.concordia.todolist.util.EMFManager;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 public class DesktopView extends ApplicationWindow {
 
@@ -66,19 +71,6 @@ public class DesktopView extends ApplicationWindow {
 	 * action that allows to remove a task
 	 */
 	private Action removeTaskAction;
-	//added by salman
-	/**
-	 * action that allows to sort tasks by their name
-	 */
-	private Action sortNameTasksAction;
-	/**
-	 * action that allows to sort tasks by their Status
-	 */
-	private Action sortStatusTasksAction;
-	/**
-	 * action that allows to sort tasks by their Importance level
-	 */
-	private Action sortImportanceTasksAction;
 	/**
 	 * the table being managed by the tableviewer
 	 */
@@ -127,14 +119,38 @@ public class DesktopView extends ApplicationWindow {
 		table.setBounds(315, 29, 528, 265);
 		
 		TableColumn columnName = new TableColumn(table, SWT.NONE);
+		columnName.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				EMFManager.getInstance().getToDoListManager().sortTasks(SortingType.BY_NAME_LITERAL,folder);
+			}
+		});
 		columnName.setWidth(100);
 		columnName.setText("Name");
 		
 		TableColumn columnImportance = new TableColumn(table, SWT.NONE);
+		columnImportance.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				EMFManager.getInstance().getToDoListManager().sortTasks(SortingType.BY_IMPORTANCE_LITERAL,folder);
+			}
+		});
 		columnImportance.setWidth(100);
 		columnImportance.setText("Importance");
 		
 		TableColumn columnStatus = new TableColumn(table, SWT.NONE);
+		columnStatus.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selection.getFirstElement();
+				EMFManager.getInstance().getToDoListManager().sortTasks(SortingType.BY_STATUS_LITERAL,folder);
+			}
+		});
 		columnStatus.setWidth(100);
 		columnStatus.setText("Status");
 		
@@ -144,6 +160,38 @@ public class DesktopView extends ApplicationWindow {
 		
 		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setBounds(0, 329, 853, 14);
+		
+		Button moveUp = new Button(container, SWT.NONE);
+		moveUp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				IStructuredSelection selectionF = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selectionF.getFirstElement();
+				IStructuredSelection selectionT = (IStructuredSelection) tableViewer.getSelection();
+				Task task = (Task)selectionT.getFirstElement();
+				if(folder!=null && task!=null){
+					EMFManager.getInstance().getToDoListManager().moveTask(task,folder,true);
+				}
+			}
+		});
+		moveUp.setText("<");
+		moveUp.setBounds(859, 76, 32, 29);
+		
+		Button moveDown = new Button(container, SWT.NONE);
+		moveDown.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				IStructuredSelection selectionF = (IStructuredSelection) treeViewer.getSelection();
+				Folder folder = (Folder) selectionF.getFirstElement();
+				IStructuredSelection selectionT = (IStructuredSelection) tableViewer.getSelection();
+				Task task = (Task)selectionT.getFirstElement();
+				if(folder!=null && task!=null){
+					EMFManager.getInstance().getToDoListManager().moveTask(task,folder,false);
+				}
+			}
+		});
+		moveDown.setText(">");
+		moveDown.setBounds(859, 130, 32, 29);
 		
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -163,8 +211,8 @@ public class DesktopView extends ApplicationWindow {
 				}
 			}
 		});	
-		createMenuManagerFolder();
-		createMenuManagerTask();
+		//createMenuManagerFolder();
+		//createMenuManagerTask();
 		parent.layout();
 		return container;
 	}
@@ -237,7 +285,7 @@ public class DesktopView extends ApplicationWindow {
 									mementoTask.getImportanceLevel(), 
 									mementoTask.getStatus(), 
 									mementoTask.getDescription(),
-									mementoTask.getParentFolders());
+									mementoTask.getAssociatedFolders());
 			}
 		};
 		editTaskAction = new Action(){
@@ -249,10 +297,11 @@ public class DesktopView extends ApplicationWindow {
 			public void run(){		
 				IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
 				Task task = (Task)selection.getFirstElement();
+				Task clone = task.clone();
 				EditTask dialog = new EditTask(DesktopView.this.getShell());
-				dialog.setTask(task);
+				dialog.setTask(clone);
 				if(dialog.open() == Window.OK){
-					EMFManager.getInstance().getToDoListManager().editTask(task);
+					EMFManager.getInstance().getToDoListManager().editTask(task,clone);
 				}
 			}
 		};
@@ -266,48 +315,6 @@ public class DesktopView extends ApplicationWindow {
 				IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
 				Task task = (Task)selection.getFirstElement();
 				EMFManager.getInstance().getToDoListManager().deleteTask(task);
-			}
-		};
-		//added by Salman
-		sortNameTasksAction = new Action() {
-			@Override
-			public String getText(){
-				return "Sort tasks by name";
-			}
-			@Override
-			public void run(){
-				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-				Folder folder = (Folder) selection.getFirstElement();
-				List<Task> tasks = folder.getTasks();
-				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Name",folder);
-			}
-		};
-		//added by Salman
-		sortStatusTasksAction = new Action() {
-			@Override
-			public String getText(){
-				return "Sort tasks by status";
-			}
-			@Override
-			public void run(){
-				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-				Folder folder = (Folder) selection.getFirstElement();
-				List<Task> tasks = folder.getTasks();
-				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Status",folder);
-			}
-		};
-		//added by Salman
-		sortImportanceTasksAction = new Action() {
-			@Override
-			public String getText(){
-				return "Sort tasks by Importance";
-			}
-			@Override
-			public void run(){
-				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-				Folder folder = (Folder) selection.getFirstElement();
-				List<Task> tasks = folder.getTasks();
-				EMFManager.getInstance().getToDoListManager().sortTasks(tasks,"Importance",folder);
 			}
 		};
 	}
@@ -343,12 +350,6 @@ public class DesktopView extends ApplicationWindow {
 						manager.add(addFolderAction);
 						manager.add(editFolderAction);
 						manager.add(removeFolderAction);
-						//added by Salman
-						if(folder.getTasks() != null){
-							manager.add(sortNameTasksAction);
-							manager.add(sortStatusTasksAction);
-							manager.add(sortImportanceTasksAction);
-						}
 					}
 				}
 			}

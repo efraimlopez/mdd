@@ -10,24 +10,24 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="taskInFolder taskName"/>
+      <details key="constraints" value="taskName"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="taskInFolder" value="self.parentFolders->size() >= 1"/>
       <details key="taskName" value="self.name &lt;> null"/>
     </eAnnotations>
     <eOperations name="statusNotStarted"/>
     <eOperations name="statusInProgress"/>
     <eOperations name="statusDone"/>
+    <eOperations name="getAssociatedFolders" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" lowerBound="1"
         eType="#//Status"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="importanceLevel" lowerBound="1"
         eType="#//Importance"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parentFolders" lowerBound="1"
-        upperBound="-1" eType="#//Folder" eOpposite="#//Folder/tasks"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="orderedTasks" lowerBound="1"
+        upperBound="-1" eType="#//TaskFolderOrder" eOpposite="#//TaskFolderOrder/task"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Status">
     <eLiterals name="NOT_STARTED"/>
@@ -41,16 +41,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="uniqueNamesSubFolders folderName uniqueNames"/>
+      <details key="constraints" value="uniqueNamesSubFolders folderName"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="uniqueNamesSubFolders" value="self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 &lt;> f2 implies f1.name &lt;> f2.name)"/>
       <details key="folderName" value="self.name &lt;> null"/>
-      <details key="uniqueNames" value="self.tasks->forAll(t1 : Task, t2 : Task | t1 &lt;> t2 implies t1.name &lt;> t2.name)"/>
     </eAnnotations>
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"
-        eType="#//Task" eOpposite="#//Task/parentFolders"/>
+    <eOperations name="getAssociatedTasks" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
+    <eOperations name="getOrderedTaskInOrder" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subFolders" upperBound="-1"
         eType="#//Folder"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Folder"/>
@@ -61,6 +60,8 @@
         <details key="namespace" value=""/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="orderedTasks" upperBound="-1"
+        eType="#//TaskFolderOrder" eOpposite="#//TaskFolderOrder/folder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToDoListManager">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -81,6 +82,7 @@
     </eOperations>
     <eOperations name="editTask">
       <eParameters name="task" eType="#//Task"/>
+      <eParameters name="newInfo" eType="#//Task"/>
     </eOperations>
     <eOperations name="deleteTask">
       <eParameters name="task" eType="#//Task"/>
@@ -102,12 +104,13 @@
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
     <eOperations name="sortTasks" ordered="false">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-        <details key="pre_condition" value="folder.tasks->size() > 1"/>
-      </eAnnotations>
-      <eParameters name="tasks" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
-      <eParameters name="sortingType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="sortingType" eType="#//SortingType"/>
       <eParameters name="folder" eType="#//Folder"/>
+    </eOperations>
+    <eOperations name="moveTask" lowerBound="1">
+      <eParameters name="task" eType="#//Task"/>
+      <eParameters name="folder" eType="#//Folder"/>
+      <eParameters name="up" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootFolder" lowerBound="1"
         eType="#//Folder"/>
@@ -172,4 +175,23 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="EntityManagerFactory" instanceClassName="javax.persistence.EntityManagerFactory"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EntityManager" instanceClassName="javax.persistence.EntityManager"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="SortingType">
+    <eLiterals name="BY_NAME"/>
+    <eLiterals name="BY_STATUS" value="1"/>
+    <eLiterals name="BY_IMPORTANCE" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskFolderOrder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="task" lowerBound="1" eType="#//Task"
+        eOpposite="#//Task/orderedTasks"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="folder" lowerBound="1"
+        eType="#//Folder" eOpposite="#//Folder/orderedTasks">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="folder"/>
+        <details key="namespace" value=""/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskPosition" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+  </eClassifiers>
 </ecore:EPackage>

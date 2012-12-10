@@ -18,38 +18,20 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link todolistdiag.Folder#getTasks <em>Tasks</em>}</li>
  *   <li>{@link todolistdiag.Folder#getSubFolders <em>Sub Folders</em>}</li>
  *   <li>{@link todolistdiag.Folder#getParent <em>Parent</em>}</li>
  *   <li>{@link todolistdiag.Folder#getId <em>Id</em>}</li>
  *   <li>{@link todolistdiag.Folder#getName <em>Name</em>}</li>
+ *   <li>{@link todolistdiag.Folder#getOrderedTasks <em>Ordered Tasks</em>}</li>
  * </ul>
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getFolder()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueNamesSubFolders folderName uniqueNames'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueNamesSubFolders='self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)' folderName='self.name <> null' uniqueNames='self.tasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueNamesSubFolders folderName'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueNamesSubFolders='self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)' folderName='self.name <> null'"
  * @generated
  */
 public interface Folder extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Tasks</b></em>' reference list.
-	 * The list contents are of type {@link todolistdiag.Task}.
-	 * It is bidirectional and its opposite is '{@link todolistdiag.Task#getParentFolders <em>Parent Folders</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Tasks</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Tasks</em>' reference list.
-	 * @see todolistdiag.TodolistdiagPackage#getFolder_Tasks()
-	 * @see todolistdiag.Task#getParentFolders
-	 * @model type="todolistdiag.Task" opposite="parentFolders"
-	 * @generated
-	 */
-	List getTasks();
-
 	/**
 	 * Returns the value of the '<em><b>Sub Folders</b></em>' reference list.
 	 * The list contents are of type {@link todolistdiag.Folder}.
@@ -92,6 +74,24 @@ public interface Folder extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Ordered Tasks</b></em>' reference list.
+	 * The list contents are of type {@link todolistdiag.TaskFolderOrder}.
+	 * It is bidirectional and its opposite is '{@link todolistdiag.TaskFolderOrder#getFolder <em>Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Ordered Tasks</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Ordered Tasks</em>' reference list.
+	 * @see todolistdiag.TodolistdiagPackage#getFolder_OrderedTasks()
+	 * @see todolistdiag.TaskFolderOrder#getFolder
+	 * @model type="todolistdiag.TaskFolderOrder" opposite="folder"
+	 * @generated
+	 */
+	List getOrderedTasks();
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
@@ -152,5 +152,21 @@ public interface Folder extends EObject {
 	 * @generated
 	 */
 	boolean hasSubFolder();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	List getAssociatedTasks();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	List getOrderedTaskInOrder();
 
 } // Folder

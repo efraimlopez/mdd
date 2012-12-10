@@ -109,22 +109,22 @@ public interface TodolistdiagPackage extends EPackage {
 	int TASK__IMPORTANCE_LEVEL = 3;
 
 	/**
-	 * The feature id for the '<em><b>Parent Folders</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TASK__PARENT_FOLDERS = 4;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__DESCRIPTION = 5;
+	int TASK__DESCRIPTION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Ordered Tasks</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__ORDERED_TASKS = 5;
 
 	/**
 	 * The number of structural features of the '<em>Task</em>' class.
@@ -146,22 +146,13 @@ public interface TodolistdiagPackage extends EPackage {
 	int FOLDER = 1;
 
 	/**
-	 * The feature id for the '<em><b>Tasks</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOLDER__TASKS = 0;
-
-	/**
 	 * The feature id for the '<em><b>Sub Folders</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__SUB_FOLDERS = 1;
+	int FOLDER__SUB_FOLDERS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Parent</b></em>' reference.
@@ -170,7 +161,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__PARENT = 2;
+	int FOLDER__PARENT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -179,7 +170,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__ID = 3;
+	int FOLDER__ID = 2;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -188,7 +179,16 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOLDER__NAME = 4;
+	int FOLDER__NAME = 3;
+
+	/**
+	 * The feature id for the '<em><b>Ordered Tasks</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOLDER__ORDERED_TASKS = 4;
 
 	/**
 	 * The number of structural features of the '<em>Folder</em>' class.
@@ -329,6 +329,61 @@ public interface TodolistdiagPackage extends EPackage {
 	int PERSISTENCE_PROVIDER_FEATURE_COUNT = 3;
 
 	/**
+	 * The meta object id for the '{@link todolistdiag.impl.TaskFolderOrderImpl <em>Task Folder Order</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see todolistdiag.impl.TaskFolderOrderImpl
+	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getTaskFolderOrder()
+	 * @generated
+	 */
+	int TASK_FOLDER_ORDER = 5;
+
+	/**
+	 * The feature id for the '<em><b>Task</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_FOLDER_ORDER__TASK = 0;
+
+	/**
+	 * The feature id for the '<em><b>Folder</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_FOLDER_ORDER__FOLDER = 1;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_FOLDER_ORDER__ID = 2;
+
+	/**
+	 * The feature id for the '<em><b>Task Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_FOLDER_ORDER__TASK_POSITION = 3;
+
+	/**
+	 * The number of structural features of the '<em>Task Folder Order</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_FOLDER_ORDER_FEATURE_COUNT = 4;
+
+	/**
 	 * The meta object id for the '{@link todolistdiag.Status <em>Status</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -336,7 +391,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getStatus()
 	 * @generated
 	 */
-	int STATUS = 5;
+	int STATUS = 6;
 
 	/**
 	 * The meta object id for the '{@link todolistdiag.Importance <em>Importance</em>}' enum.
@@ -346,7 +401,17 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getImportance()
 	 * @generated
 	 */
-	int IMPORTANCE = 6;
+	int IMPORTANCE = 7;
+
+	/**
+	 * The meta object id for the '{@link todolistdiag.SortingType <em>Sorting Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see todolistdiag.SortingType
+	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getSortingType()
+	 * @generated
+	 */
+	int SORTING_TYPE = 8;
 
 	/**
 	 * The meta object id for the '<em>Folder Manager Event</em>' data type.
@@ -356,7 +421,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getFolderManagerEvent()
 	 * @generated
 	 */
-	int FOLDER_MANAGER_EVENT = 7;
+	int FOLDER_MANAGER_EVENT = 9;
 
 
 	/**
@@ -367,7 +432,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManagerFactory()
 	 * @generated
 	 */
-	int ENTITY_MANAGER_FACTORY = 8;
+	int ENTITY_MANAGER_FACTORY = 10;
 
 	/**
 	 * The meta object id for the '<em>Entity Manager</em>' data type.
@@ -377,7 +442,7 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @see todolistdiag.impl.TodolistdiagPackageImpl#getEntityManager()
 	 * @generated
 	 */
-	int ENTITY_MANAGER = 9;
+	int ENTITY_MANAGER = 11;
 
 
 	/**
@@ -424,17 +489,6 @@ public interface TodolistdiagPackage extends EPackage {
 	EAttribute getTask_ImportanceLevel();
 
 	/**
-	 * Returns the meta object for the reference list '{@link todolistdiag.Task#getParentFolders <em>Parent Folders</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Parent Folders</em>'.
-	 * @see todolistdiag.Task#getParentFolders()
-	 * @see #getTask()
-	 * @generated
-	 */
-	EReference getTask_ParentFolders();
-
-	/**
 	 * Returns the meta object for the attribute '{@link todolistdiag.Task#getDescription <em>Description</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -444,6 +498,17 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTask_Description();
+
+	/**
+	 * Returns the meta object for the reference list '{@link todolistdiag.Task#getOrderedTasks <em>Ordered Tasks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Ordered Tasks</em>'.
+	 * @see todolistdiag.Task#getOrderedTasks()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EReference getTask_OrderedTasks();
 
 	/**
 	 * Returns the meta object for the attribute '{@link todolistdiag.Task#getId <em>Id</em>}'.
@@ -467,17 +532,6 @@ public interface TodolistdiagPackage extends EPackage {
 	EClass getFolder();
 
 	/**
-	 * Returns the meta object for the reference list '{@link todolistdiag.Folder#getTasks <em>Tasks</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Tasks</em>'.
-	 * @see todolistdiag.Folder#getTasks()
-	 * @see #getFolder()
-	 * @generated
-	 */
-	EReference getFolder_Tasks();
-
-	/**
 	 * Returns the meta object for the reference list '{@link todolistdiag.Folder#getSubFolders <em>Sub Folders</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -498,6 +552,17 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getFolder_Name();
+
+	/**
+	 * Returns the meta object for the reference list '{@link todolistdiag.Folder#getOrderedTasks <em>Ordered Tasks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Ordered Tasks</em>'.
+	 * @see todolistdiag.Folder#getOrderedTasks()
+	 * @see #getFolder()
+	 * @generated
+	 */
+	EReference getFolder_OrderedTasks();
 
 	/**
 	 * Returns the meta object for the attribute '{@link todolistdiag.Folder#getId <em>Id</em>}'.
@@ -640,6 +705,60 @@ public interface TodolistdiagPackage extends EPackage {
 	EAttribute getPersistenceProvider_Entitymanager();
 
 	/**
+	 * Returns the meta object for class '{@link todolistdiag.TaskFolderOrder <em>Task Folder Order</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Task Folder Order</em>'.
+	 * @see todolistdiag.TaskFolderOrder
+	 * @generated
+	 */
+	EClass getTaskFolderOrder();
+
+	/**
+	 * Returns the meta object for the reference '{@link todolistdiag.TaskFolderOrder#getTask <em>Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Task</em>'.
+	 * @see todolistdiag.TaskFolderOrder#getTask()
+	 * @see #getTaskFolderOrder()
+	 * @generated
+	 */
+	EReference getTaskFolderOrder_Task();
+
+	/**
+	 * Returns the meta object for the reference '{@link todolistdiag.TaskFolderOrder#getFolder <em>Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Folder</em>'.
+	 * @see todolistdiag.TaskFolderOrder#getFolder()
+	 * @see #getTaskFolderOrder()
+	 * @generated
+	 */
+	EReference getTaskFolderOrder_Folder();
+
+	/**
+	 * Returns the meta object for the attribute '{@link todolistdiag.TaskFolderOrder#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see todolistdiag.TaskFolderOrder#getId()
+	 * @see #getTaskFolderOrder()
+	 * @generated
+	 */
+	EAttribute getTaskFolderOrder_Id();
+
+	/**
+	 * Returns the meta object for the attribute '{@link todolistdiag.TaskFolderOrder#getTaskPosition <em>Task Position</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Task Position</em>'.
+	 * @see todolistdiag.TaskFolderOrder#getTaskPosition()
+	 * @see #getTaskFolderOrder()
+	 * @generated
+	 */
+	EAttribute getTaskFolderOrder_TaskPosition();
+
+	/**
 	 * Returns the meta object for enum '{@link todolistdiag.Status <em>Status</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -658,6 +777,16 @@ public interface TodolistdiagPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getImportance();
+
+	/**
+	 * Returns the meta object for enum '{@link todolistdiag.SortingType <em>Sorting Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Sorting Type</em>'.
+	 * @see todolistdiag.SortingType
+	 * @generated
+	 */
+	EEnum getSortingType();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.EventObject <em>Folder Manager Event</em>}'.
@@ -749,20 +878,20 @@ public interface TodolistdiagPackage extends EPackage {
 		EAttribute TASK__IMPORTANCE_LEVEL = eINSTANCE.getTask_ImportanceLevel();
 
 		/**
-		 * The meta object literal for the '<em><b>Parent Folders</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TASK__PARENT_FOLDERS = eINSTANCE.getTask_ParentFolders();
-
-		/**
 		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute TASK__DESCRIPTION = eINSTANCE.getTask_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Ordered Tasks</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK__ORDERED_TASKS = eINSTANCE.getTask_OrderedTasks();
 
 		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
@@ -783,14 +912,6 @@ public interface TodolistdiagPackage extends EPackage {
 		EClass FOLDER = eINSTANCE.getFolder();
 
 		/**
-		 * The meta object literal for the '<em><b>Tasks</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOLDER__TASKS = eINSTANCE.getFolder_Tasks();
-
-		/**
 		 * The meta object literal for the '<em><b>Sub Folders</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -805,6 +926,14 @@ public interface TodolistdiagPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FOLDER__NAME = eINSTANCE.getFolder_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Ordered Tasks</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FOLDER__ORDERED_TASKS = eINSTANCE.getFolder_OrderedTasks();
 
 		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
@@ -917,6 +1046,48 @@ public interface TodolistdiagPackage extends EPackage {
 		EAttribute PERSISTENCE_PROVIDER__ENTITYMANAGER = eINSTANCE.getPersistenceProvider_Entitymanager();
 
 		/**
+		 * The meta object literal for the '{@link todolistdiag.impl.TaskFolderOrderImpl <em>Task Folder Order</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see todolistdiag.impl.TaskFolderOrderImpl
+		 * @see todolistdiag.impl.TodolistdiagPackageImpl#getTaskFolderOrder()
+		 * @generated
+		 */
+		EClass TASK_FOLDER_ORDER = eINSTANCE.getTaskFolderOrder();
+
+		/**
+		 * The meta object literal for the '<em><b>Task</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK_FOLDER_ORDER__TASK = eINSTANCE.getTaskFolderOrder_Task();
+
+		/**
+		 * The meta object literal for the '<em><b>Folder</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK_FOLDER_ORDER__FOLDER = eINSTANCE.getTaskFolderOrder_Folder();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TASK_FOLDER_ORDER__ID = eINSTANCE.getTaskFolderOrder_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Task Position</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TASK_FOLDER_ORDER__TASK_POSITION = eINSTANCE.getTaskFolderOrder_TaskPosition();
+
+		/**
 		 * The meta object literal for the '{@link todolistdiag.Status <em>Status</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -935,6 +1106,16 @@ public interface TodolistdiagPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum IMPORTANCE = eINSTANCE.getImportance();
+
+		/**
+		 * The meta object literal for the '{@link todolistdiag.SortingType <em>Sorting Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see todolistdiag.SortingType
+		 * @see todolistdiag.impl.TodolistdiagPackageImpl#getSortingType()
+		 * @generated
+		 */
+		EEnum SORTING_TYPE = eINSTANCE.getSortingType();
 
 		/**
 		 * The meta object literal for the '<em>Folder Manager Event</em>' data type.

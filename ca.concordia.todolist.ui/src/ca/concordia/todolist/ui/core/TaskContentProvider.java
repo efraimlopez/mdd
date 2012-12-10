@@ -67,7 +67,7 @@ public class TaskContentProvider implements IStructuredContentProvider,FolderMan
 	}
 	@Override
 	public Object[] getElements(Object arg0) {
-		return containerFolder.getTasks().toArray();
+		return containerFolder.getAssociatedTasks().toArray();
 	}
 	@Override
 	public void folderAdded(EventObject event) {

@@ -106,10 +106,14 @@ public class TodolistdiagValidator extends EObjectValidator {
 				return validateFolderManagerListener((FolderManagerListener)value, diagnostics, context);
 			case TodolistdiagPackage.PERSISTENCE_PROVIDER:
 				return validatePersistenceProvider((PersistenceProvider)value, diagnostics, context);
+			case TodolistdiagPackage.TASK_FOLDER_ORDER:
+				return validateTaskFolderOrder((TaskFolderOrder)value, diagnostics, context);
 			case TodolistdiagPackage.STATUS:
 				return validateStatus((Status)value, diagnostics, context);
 			case TodolistdiagPackage.IMPORTANCE:
 				return validateImportance((Importance)value, diagnostics, context);
+			case TodolistdiagPackage.SORTING_TYPE:
+				return validateSortingType((SortingType)value, diagnostics, context);
 			case TodolistdiagPackage.FOLDER_MANAGER_EVENT:
 				return validateFolderManagerEvent((EventObject)value, diagnostics, context);
 			case TodolistdiagPackage.ENTITY_MANAGER_FACTORY:
@@ -132,7 +136,6 @@ public class TodolistdiagValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(task, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(task, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(task, diagnostics, context);
-		if (result || diagnostics != null) result &= validateTask_taskInFolder(task, diagnostics, context);
 		if (result || diagnostics != null) result &= validateTask_taskName(task, diagnostics, context);
 		return result;
 	}
@@ -147,7 +150,7 @@ public class TodolistdiagValidator extends EObjectValidator {
 		// -> specify the condition that violates the constraint
 		// -> verify the diagnostic details, including severity, code, and message
 		// Ensure that you remove @generated or mark it @generated NOT
-		if (task.getParentFolders().size()<1) {
+		if (task.getOrderedTasks().size()<1) {
 			if (diagnostics != null) {
 				diagnostics.add
 					(new BasicDiagnostic
@@ -200,7 +203,6 @@ public class TodolistdiagValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(folder, diagnostics, context);
 		if (result || diagnostics != null) result &= validateFolder_uniqueNamesSubFolders(folder, diagnostics, context);
 		if (result || diagnostics != null) result &= validateFolder_folderName(folder, diagnostics, context);
-		if (result || diagnostics != null) result &= validateFolder_uniqueNames(folder, diagnostics, context);
 		return result;
 	}
 
@@ -258,32 +260,6 @@ public class TodolistdiagValidator extends EObjectValidator {
 						 DIAGNOSTIC_SOURCE,
 						 0,
 						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "folderName", getObjectLabel(folder, context) }),
-						 new Object[] { folder }));
-			}
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Validates the uniqueNames constraint of '<em>Folder</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateFolder_uniqueNames(Folder folder, DiagnosticChain diagnostics, Map context) {
-		// TODO implement the constraint
-		// -> specify the condition that violates the constraint
-		// -> verify the diagnostic details, including severity, code, and message
-		// Ensure that you remove @generated or mark it @generated NOT
-		if (false) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(new BasicDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "uniqueNames", getObjectLabel(folder, context) }),
 						 new Object[] { folder }));
 			}
 			return false;
@@ -436,6 +412,15 @@ public class TodolistdiagValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean validateTaskFolderOrder(TaskFolderOrder taskFolderOrder, DiagnosticChain diagnostics, Map context) {
+		return validate_EveryDefaultConstraint(taskFolderOrder, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean validateStatus(Status status, DiagnosticChain diagnostics, Map context) {
 		return true;
 	}
@@ -446,6 +431,15 @@ public class TodolistdiagValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateImportance(Importance importance, DiagnosticChain diagnostics, Map context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateSortingType(SortingType sortingType, DiagnosticChain diagnostics, Map context) {
 		return true;
 	}
 

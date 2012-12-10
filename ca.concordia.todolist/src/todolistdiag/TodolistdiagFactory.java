@@ -62,6 +62,15 @@ public interface TodolistdiagFactory extends EFactory {
 	PersistenceProvider createPersistenceProvider();
 
 	/**
+	 * Returns a new object of class '<em>Task Folder Order</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Task Folder Order</em>'.
+	 * @generated
+	 */
+	TaskFolderOrder createTaskFolderOrder();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

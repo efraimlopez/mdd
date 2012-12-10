@@ -117,6 +117,12 @@ public class TodolistdiagSwitch {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TodolistdiagPackage.TASK_FOLDER_ORDER: {
+				TaskFolderOrder taskFolderOrder = (TaskFolderOrder)theEObject;
+				Object result = caseTaskFolderOrder(taskFolderOrder);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -193,6 +199,21 @@ public class TodolistdiagSwitch {
 	 * @generated
 	 */
 	public Object casePersistenceProvider(PersistenceProvider object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Task Folder Order</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Task Folder Order</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public Object caseTaskFolderOrder(TaskFolderOrder object) {
 		return null;
 	}
 

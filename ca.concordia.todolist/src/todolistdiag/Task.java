@@ -22,14 +22,14 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link todolistdiag.Task#getName <em>Name</em>}</li>
  *   <li>{@link todolistdiag.Task#getStatus <em>Status</em>}</li>
  *   <li>{@link todolistdiag.Task#getImportanceLevel <em>Importance Level</em>}</li>
- *   <li>{@link todolistdiag.Task#getParentFolders <em>Parent Folders</em>}</li>
  *   <li>{@link todolistdiag.Task#getDescription <em>Description</em>}</li>
+ *   <li>{@link todolistdiag.Task#getOrderedTasks <em>Ordered Tasks</em>}</li>
  * </ul>
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getTask()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskInFolder taskName'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskInFolder='self.parentFolders->size() >= 1' taskName='self.name <> null'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskName'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskName='self.name <> null'"
  * @generated
  */
 public interface Task extends EObject {
@@ -118,24 +118,6 @@ public interface Task extends EObject {
 	void setImportanceLevel(Importance value);
 
 	/**
-	 * Returns the value of the '<em><b>Parent Folders</b></em>' reference list.
-	 * The list contents are of type {@link todolistdiag.Folder}.
-	 * It is bidirectional and its opposite is '{@link todolistdiag.Folder#getTasks <em>Tasks</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parent Folders</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parent Folders</em>' reference list.
-	 * @see todolistdiag.TodolistdiagPackage#getTask_ParentFolders()
-	 * @see todolistdiag.Folder#getTasks
-	 * @model type="todolistdiag.Folder" opposite="tasks" required="true"
-	 * @generated
-	 */
-	List getParentFolders();
-
-	/**
 	 * Returns the value of the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -160,6 +142,24 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	void setDescription(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Ordered Tasks</b></em>' reference list.
+	 * The list contents are of type {@link todolistdiag.TaskFolderOrder}.
+	 * It is bidirectional and its opposite is '{@link todolistdiag.TaskFolderOrder#getTask <em>Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Ordered Tasks</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Ordered Tasks</em>' reference list.
+	 * @see todolistdiag.TodolistdiagPackage#getTask_OrderedTasks()
+	 * @see todolistdiag.TaskFolderOrder#getTask
+	 * @model type="todolistdiag.TaskFolderOrder" opposite="task" required="true"
+	 * @generated
+	 */
+	List getOrderedTasks();
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
@@ -210,5 +210,15 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	void statusDone();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	List getAssociatedFolders();
+	
+	Task clone();
 
 } // Task

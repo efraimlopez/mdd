@@ -15,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -28,10 +28,12 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import todolistdiag.Folder;
+import ca.concordia.todolist.util.EMFManager;
+
 import todolistdiag.Importance;
 import todolistdiag.Status;
 import todolistdiag.Task;
+import todolistdiag.TaskFolderOrder;
 import todolistdiag.TodolistdiagPackage;
 
 /**
@@ -45,8 +47,8 @@ import todolistdiag.TodolistdiagPackage;
  *   <li>{@link todolistdiag.impl.TaskImpl#getName <em>Name</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getStatus <em>Status</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getImportanceLevel <em>Importance Level</em>}</li>
- *   <li>{@link todolistdiag.impl.TaskImpl#getParentFolders <em>Parent Folders</em>}</li>
  *   <li>{@link todolistdiag.impl.TaskImpl#getDescription <em>Description</em>}</li>
+ *   <li>{@link todolistdiag.impl.TaskImpl#getOrderedTasks <em>Ordered Tasks</em>}</li>
  * </ul>
  * </p>
  *
@@ -142,16 +144,6 @@ public class TaskImpl extends EObjectImpl implements Task {
 	protected Importance importanceLevel = IMPORTANCE_LEVEL_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getParentFolders() <em>Parent Folders</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParentFolders()
-	 * @ordered
-	 */
-	@ManyToMany(targetEntity=FolderImpl.class,mappedBy="tasks",fetch=FetchType.EAGER)
-	protected List parentFolders;
-
-	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -172,8 +164,18 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	protected String description = DESCRIPTION_EDEFAULT;
 
-	protected String statusPersistanceable = this.getStatus().toString();
-	protected String importancePersistanceable = this.getImportanceLevel().toString();
+	/**
+	 * The cached value of the '{@link #getOrderedTasks() <em>Ordered Tasks</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderedTasks()
+	 * @ordered
+	 */
+	@OneToMany(targetEntity=TaskFolderOrderImpl.class,mappedBy="task",fetch=FetchType.EAGER)
+	protected List orderedTasks;
+
+	protected String statusPersistanceable = null;//this.getStatus().toString();
+	protected String importancePersistanceable = null;//this.getImportanceLevel().toString();
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -247,25 +249,13 @@ public class TaskImpl extends EObjectImpl implements Task {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void setImportanceLevel(Importance newImportanceLevel) {
 		Importance oldImportanceLevel = importanceLevel;
 		importanceLevel = newImportanceLevel == null ? IMPORTANCE_LEVEL_EDEFAULT : newImportanceLevel;
+		this.setImportancePersistanceable(importanceLevel.toString());
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TodolistdiagPackage.TASK__IMPORTANCE_LEVEL, oldImportanceLevel, importanceLevel));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 */
-	public List getParentFolders() {
-		if (parentFolders == null) {
-			//parentFolders = new EObjectWithInverseResolvingEList.ManyInverse(Folder.class, this, TodolistdiagPackage.TASK__PARENT_FOLDERS, TodolistdiagPackage.FOLDER__TASKS);
-			parentFolders = new ArrayList();
-		}
-		return parentFolders;
 	}
 
 	/**
@@ -287,6 +277,18 @@ public class TaskImpl extends EObjectImpl implements Task {
 		description = newDescription;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TodolistdiagPackage.TASK__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public List getOrderedTasks() {
+		if (orderedTasks == null) {
+			//parentFolders = new EObjectWithInverseResolvingEList.ManyInverse(Folder.class, this, TodolistdiagPackage.TASK__PARENT_FOLDERS, TodolistdiagPackage.FOLDER__TASKS);
+			orderedTasks = new ArrayList();
+		}
+		return orderedTasks;
 	}
 
 	/**
@@ -346,14 +348,27 @@ public class TaskImpl extends EObjectImpl implements Task {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 */
+	public List getAssociatedFolders() {
+		List r = new ArrayList();
+		for(Object o : this.getOrderedTasks()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			r.add(tf.getFolder());
+		}
+		return r;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				return ((InternalEList)getParentFolders()).basicAdd(otherEnd, msgs);
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				return ((InternalEList)getOrderedTasks()).basicAdd(otherEnd, msgs);
 		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
+		return eDynamicInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -363,10 +378,10 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				return ((InternalEList)getParentFolders()).basicRemove(otherEnd, msgs);
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				return ((InternalEList)getOrderedTasks()).basicRemove(otherEnd, msgs);
 		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+		return eDynamicInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -384,12 +399,12 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getStatus();
 			case TodolistdiagPackage.TASK__IMPORTANCE_LEVEL:
 				return getImportanceLevel();
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				return getParentFolders();
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				return getDescription();
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				return getOrderedTasks();
 		}
-		return super.eGet(featureID, resolve, coreType);
+		return eDynamicGet(featureID, resolve, coreType);
 	}
 
 	/**
@@ -411,15 +426,15 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case TodolistdiagPackage.TASK__IMPORTANCE_LEVEL:
 				setImportanceLevel((Importance)newValue);
 				return;
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				getParentFolders().clear();
-				getParentFolders().addAll((Collection)newValue);
-				return;
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				getOrderedTasks().clear();
+				getOrderedTasks().addAll((Collection)newValue);
+				return;
 		}
-		super.eSet(featureID, newValue);
+		eDynamicSet(featureID, newValue);
 	}
 
 	/**
@@ -441,14 +456,14 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case TodolistdiagPackage.TASK__IMPORTANCE_LEVEL:
 				setImportanceLevel(IMPORTANCE_LEVEL_EDEFAULT);
 				return;
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				getParentFolders().clear();
-				return;
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				getOrderedTasks().clear();
+				return;
 		}
-		super.eUnset(featureID);
+		eDynamicUnset(featureID);
 	}
 
 	/**
@@ -466,12 +481,12 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return status != STATUS_EDEFAULT;
 			case TodolistdiagPackage.TASK__IMPORTANCE_LEVEL:
 				return importanceLevel != IMPORTANCE_LEVEL_EDEFAULT;
-			case TodolistdiagPackage.TASK__PARENT_FOLDERS:
-				return parentFolders != null && !parentFolders.isEmpty();
 			case TodolistdiagPackage.TASK__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+			case TodolistdiagPackage.TASK__ORDERED_TASKS:
+				return orderedTasks != null && !orderedTasks.isEmpty();
 		}
-		return super.eIsSet(featureID);
+		return eDynamicIsSet(featureID);
 	}
 
 	/**
@@ -515,14 +530,38 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @return
 	 */
 	public String getImportancePersistanceable(){
-		return this.statusPersistanceable;
+		return this.importancePersistanceable;
 	}
 	/**
 	 * workaround the persist emf enumeration state
 	 * @param importance
 	 */
 	public void setImportancePersistanceable(String importance){
-		this.statusPersistanceable = importance;
+		this.importancePersistanceable = importance;
+	}
+	
+	public void updateEnumerators(){
+		this.status = Status.getByName(this.getStatusPersistanceable());
+		this.importanceLevel = Importance.getByName(this.getImportancePersistanceable());
+	}
+	
+	@Override
+	public Task clone(){
+		Task clone = EMFManager.getInstance().getFactory().createTask();
+		clone.setImportanceLevel(this.getImportanceLevel());
+		clone.setName(this.getName());
+		clone.setStatus(this.getStatus());
+		clone.setDescription(this.getDescription());
+		clone.getOrderedTasks().addAll(this.getOrderedTasks());
+		return clone;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o!=null && o instanceof Task){
+			return this.id == ((Task)o).getId();
+		} 
+		return false;
 	}
 
 } //TaskImpl

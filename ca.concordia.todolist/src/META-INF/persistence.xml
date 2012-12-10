@@ -5,6 +5,7 @@
   <persistence-unit name="todolist" transaction-type="RESOURCE_LOCAL">
     <class>todolistdiag.impl.FolderImpl</class>
     <class>todolistdiag.impl.TaskImpl</class>
+    <class>todolistdiag.impl.TaskFolderOrderImpl</class>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
       <property name="javax.persistence.jdbc.url"

@@ -144,17 +144,17 @@ public interface ToDoListManager extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model required="true" foldersMany="false"
+	 * @model
+	 * @generated
 	 */
-	Task createTask(String name, Importance importance, Status status, String description, List folders);
+	void editTask(Task task, Task newInfo);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
+	 * @model required="true" foldersMany="false"
 	 */
-	void editTask(Task task);
+	Task createTask(String name, Importance importance, Status status, String description, List folders);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -207,19 +207,18 @@ public interface ToDoListManager extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model tasksMany="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_condition='folder.tasks->size() > 1'"
+	 * @model
 	 * @generated
 	 */
-	void sortTasks(EList tasks, String sortingType, Folder folder);
+	void sortTasks(SortingType sortingType, Folder folder);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model many="false" tasksMany="false"
-	 * 
+	 * @model
+	 * @generated
 	 */
-	void sortTasks(List tasks, String sortingType, Folder folder);
+	void moveTask(Task task, Folder folder, boolean up);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -85,6 +85,9 @@ public class TodolistdiagAdapterFactory extends AdapterFactoryImpl {
 			public Object casePersistenceProvider(PersistenceProvider object) {
 				return createPersistenceProviderAdapter();
 			}
+			public Object caseTaskFolderOrder(TaskFolderOrder object) {
+				return createTaskFolderOrderAdapter();
+			}
 			public Object defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -170,6 +173,20 @@ public class TodolistdiagAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPersistenceProviderAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link todolistdiag.TaskFolderOrder <em>Task Folder Order</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see todolistdiag.TaskFolderOrder
+	 * @generated
+	 */
+	public Adapter createTaskFolderOrderAdapter() {
 		return null;
 	}
 

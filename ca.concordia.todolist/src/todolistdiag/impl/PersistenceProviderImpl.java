@@ -186,34 +186,21 @@ public class PersistenceProviderImpl extends EObjectImpl implements PersistenceP
 	    entitymanager = factory.createEntityManager();
 	    Query q = entitymanager.createQuery("select t from FolderImpl t");
 	    List<Folder> todoList = q.getResultList();
-
+	    
 	    if(todoList == null || todoList.size()<1){
 	    	Folder rootFolder = EMFManager.getInstance().getFactory().createFolder();
 	    	rootFolder.setName("root");
 	    	rootFolder.setParent(null);  	
 	    	persist(rootFolder);
-	    	
-	    	Folder subFolder = EMFManager.getInstance().getFactory().createFolder();
-	    	subFolder.setName("subFolder");
-	    	subFolder.setParent(rootFolder);    	
-	    	persist(subFolder);
-	    	
-	    	rootFolder.getSubFolders().add(subFolder);
-	    	
-	    	Task task1 = EMFManager.getInstance().getFactory().createTask();
-	    	task1.setImportanceLevel(Importance.HIGH_LITERAL);
-	    	task1.setName("Finish this Project");
-	    	task1.setDescription("this is a test task");
-	    	task1.setStatus(Status.IN_PROGRESS_LITERAL);
-	    	task1.getParentFolders().add(subFolder);
-	    	persist(task1);
 	    }
+	    
 	    q = entitymanager.createQuery("select t from TaskImpl t");
 	    List<Task> todoList2 = q.getResultList();
 	    if(todoList2!=null){
 	    	for(Object o : todoList2){
-	    		Task t = (Task) o;
-	    		System.out.println("task = "+t.getName() + " /// "+ t.getParentFolders().toString());
+	    		TaskImpl t = (TaskImpl) o;
+	    		t.updateEnumerators();
+	    		System.out.println("Task->"+t.getId()+"/name="+t.getName()+"/importance="+t.getImportanceLevel()+"/status="+t.getStatus()+"/description="+t.getDescription());
 	    	}
 	    }
 		// Registers a shutdown hook for the apache derbi instance so that it
@@ -320,7 +307,7 @@ public class PersistenceProviderImpl extends EObjectImpl implements PersistenceP
 			case TodolistdiagPackage.PERSISTENCE_PROVIDER__ENTITYMANAGER:
 				return getEntitymanager();
 		}
-		return super.eGet(featureID, resolve, coreType);
+		return eDynamicGet(featureID, resolve, coreType);
 	}
 
 	/**
@@ -337,7 +324,7 @@ public class PersistenceProviderImpl extends EObjectImpl implements PersistenceP
 				setEntitymanager((EntityManager)newValue);
 				return;
 		}
-		super.eSet(featureID, newValue);
+		eDynamicSet(featureID, newValue);
 	}
 
 	/**
@@ -354,7 +341,7 @@ public class PersistenceProviderImpl extends EObjectImpl implements PersistenceP
 				setEntitymanager(ENTITYMANAGER_EDEFAULT);
 				return;
 		}
-		super.eUnset(featureID);
+		eDynamicUnset(featureID);
 	}
 
 	/**
@@ -371,7 +358,7 @@ public class PersistenceProviderImpl extends EObjectImpl implements PersistenceP
 			case TodolistdiagPackage.PERSISTENCE_PROVIDER__ENTITYMANAGER:
 				return ENTITYMANAGER_EDEFAULT == null ? entitymanager != null : !ENTITYMANAGER_EDEFAULT.equals(entitymanager);
 		}
-		return super.eIsSet(featureID);
+		return eDynamicIsSet(featureID);
 	}
 
 	/**

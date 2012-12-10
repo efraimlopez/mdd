@@ -33,8 +33,10 @@ import todolistdiag.Folder;
 import todolistdiag.FolderManagerListener;
 import todolistdiag.Importance;
 import todolistdiag.PersistenceProvider;
+import todolistdiag.SortingType;
 import todolistdiag.Status;
 import todolistdiag.Task;
+import todolistdiag.TaskFolderOrder;
 import todolistdiag.ToDoListManager;
 import todolistdiag.TodolistdiagPackage;
 
@@ -268,11 +270,18 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 		task.setImportanceLevel(importance);
 		task.setStatus(status);
 		task.setDescription(description);
+		getPersistanceProvider().persist(task);
 		for(Object o : folders){
 			Folder f = (Folder) o;
-			//f.getTasks().add(task);
-			task.getParentFolders().add(f);
-			f.getTasks().add(task);
+
+			TaskFolderOrder tf = EMFManager.getInstance().getFactory().createTaskFolderOrder();
+			tf.setFolder(f);
+			tf.setTask(task);
+			tf.setTaskPosition(f.getOrderedTasks().size());
+			getPersistanceProvider().persist(tf);
+			
+			task.getOrderedTasks().add(tf);
+			f.getOrderedTasks().add(tf);
 		}		
 		getPersistanceProvider().persist(task);
 		//notify all the listeners
@@ -287,14 +296,41 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 */
-	public void editTask(Task task) {
+	public void editTask(Task task, Task newInfo) {
 		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		for(Object o : task.getParentFolders()){
-			Folder f = (Folder) o;
-			f.getTasks().add(task);
+		//first we removed every reference of this task from every folder it belongs 
+		//to, and subsequently we remove the reference from database
+		for(Object o : task.getOrderedTasks()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			tf.getFolder().getOrderedTasks().remove(tf);
+			//we have to update the the task's positions in the container folder
+			int i = 0;
+			for(Object innerO : tf.getFolder().getOrderedTaskInOrder()){
+				TaskFolderOrder innerTf = (TaskFolderOrder) innerO;
+				innerTf.setTaskPosition(i++);
+				getPersistanceProvider().update(innerTf);
+			}
+			//and we delete the reference from db
+			getPersistanceProvider().delete(tf);
 		}
+		task.getOrderedTasks().removeAll(task.getOrderedTasks());
+		
+		task.setImportanceLevel(newInfo.getImportanceLevel());
+		task.setName(newInfo.getName());
+		task.setDescription(newInfo.getDescription());
+		task.setStatus(newInfo.getStatus());
+		
+		//then we add the updated reference of this task to the related folders
+		for(Object o : newInfo.getOrderedTasks()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			tf.setTaskPosition(tf.getFolder().getOrderedTasks().size());
+			tf.setTask(task);
+			getPersistanceProvider().persist(tf);
+			tf.getFolder().getOrderedTasks().add(tf);
+			task.getOrderedTasks().add(tf);
+		}	
 		getPersistanceProvider().update(task);
+		
 		//notify all the listeners
 		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
 			FolderManagerListener listener = (FolderManagerListener) it.next();
@@ -309,9 +345,19 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	public void deleteTask(Task task) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		for(Object o : task.getParentFolders()){
-			Folder f = (Folder) o;
-			f.getTasks().remove(task);
+		for(Object o : task.getOrderedTasks()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;		
+			tf.getFolder().getOrderedTasks().remove(tf);
+			tf.getTask().getOrderedTasks().remove(tf);
+			//we have to update the the task's positions in the container folder
+			int i = 0;
+			for(Object innerO : tf.getFolder().getOrderedTaskInOrder()){
+				TaskFolderOrder innerTf = (TaskFolderOrder) innerO;
+				innerTf.setTaskPosition(i++);
+				getPersistanceProvider().update(innerTf);
+			}
+			//we also remove the connector/reference
+			getPersistanceProvider().delete(tf);
 		}
 		getPersistanceProvider().delete(task);
 		//notify all the listeners
@@ -395,56 +441,83 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
-	public void sortTasks(EList tasks, String sortingType, Folder folder) {
+	public void sortTasks(SortingType sortingType, Folder folder) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		//String type = sortingType;
+		List<TaskFolderOrder> orderedTasks = folder.getOrderedTasks();
+		if(orderedTasks==null && orderedTasks.size()==0){
+			return;
+		}
+		if(sortingType==SortingType.BY_NAME_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t1.getTask().getName().compareTo(t2.getTask().getName());
+				}
+			});
+		}
+		if(sortingType==SortingType.BY_STATUS_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t2.getTask().getStatus().getValue()-t1.getTask().getStatus().getValue();
+				}			
+			});
+		}
+		if(sortingType==SortingType.BY_IMPORTANCE_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t2.getTask().getImportanceLevel().getValue()-t1.getTask().getImportanceLevel().getValue();
+				}	
+			});
+		}
+		int i = 0;
+		for(Object o : orderedTasks){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			tf.setTaskPosition(i++);
+			getPersistanceProvider().update(tf);
+		}
+		notifyFolderModified();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 */
-	public void sortTasks(List tasks, String sortingType,Folder folder) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		//String type = sortingType;
-		if(sortingType.equals("Name")){
-			Collections.sort(tasks, new Comparator<Task>() {
-
-				@Override
-				public int compare(Task t1, Task t2) {
-				return t1.getName().compareTo(t2.getName());
-				}
-				
-			});
+	public void moveTask(Task task, Folder folder, boolean up) {
+		TaskFolderOrder aux = null;
+		TaskFolderOrder ref = null;
+		int totalElements = folder.getOrderedTaskInOrder().size();
+		for(Object o : folder.getOrderedTaskInOrder()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			if(!up && ref !=null){
+				aux = tf;
+				break;
+			}
+			if(tf.getTask().equals(task)){
+				ref = tf;
+			}
+			if(up && ref!=null) break;
+			aux = tf;
 		}
-		if(sortingType.equals("Status")){
-			Collections.sort(tasks, new Comparator<Task>() {
-
-				@Override
-				public int compare(Task t1, Task t2) {
-				return t2.getStatus().getValue()-t1.getStatus().getValue();
-				}
-				
-			});
+		long currPos = ref.getTaskPosition();
+		boolean notify = false;
+		if(up && currPos>0){
+			ref.setTaskPosition(currPos-1);
+			aux.setTaskPosition(currPos);
+			notify = true;
+		}else if (!up && currPos < totalElements-1){
+			ref.setTaskPosition(currPos+1);
+			aux.setTaskPosition(currPos);
+			notify = true;
 		}
-		if(sortingType.equals("Importance")){
-			Collections.sort(tasks, new Comparator<Task>() {
-
-				@Override
-				public int compare(Task t1, Task t2) {
-				return t2.getImportanceLevel().getValue()-t1.getImportanceLevel().getValue();
-				}
-				
-			});
-		}
-		getPersistanceProvider().update(folder);
-		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
-			FolderManagerListener listener = (FolderManagerListener) it.next();
-			listener.folderModified(null);
+		if(notify){
+			getPersistanceProvider().update(aux);
+			getPersistanceProvider().update(ref);
+			notifyFolderModified();
 		}
 	}
 
@@ -468,7 +541,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				if (resolve) return getPersistanceProvider();
 				return basicGetPersistanceProvider();
 		}
-		return super.eGet(featureID, resolve, coreType);
+		return eDynamicGet(featureID, resolve, coreType);
 	}
 
 	/**
@@ -497,7 +570,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				setPersistanceProvider((PersistenceProvider)newValue);
 				return;
 		}
-		super.eSet(featureID, newValue);
+		eDynamicSet(featureID, newValue);
 	}
 
 	/**
@@ -523,7 +596,7 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 				setPersistanceProvider((PersistenceProvider)null);
 				return;
 		}
-		super.eUnset(featureID);
+		eDynamicUnset(featureID);
 	}
 
 	/**
@@ -544,6 +617,13 @@ public class ToDoListManagerImpl extends EObjectImpl implements ToDoListManager 
 			case TodolistdiagPackage.TO_DO_LIST_MANAGER__PERSISTANCE_PROVIDER:
 				return persistanceProvider != null;
 		}
-		return super.eIsSet(featureID);
+		return eDynamicIsSet(featureID);
+	}
+	
+	public void notifyFolderModified(){
+		for(Iterator it = getFolderManagerListener().iterator(); it.hasNext(); ){
+			FolderManagerListener listener = (FolderManagerListener) it.next();
+			listener.folderModified(null);
+		}
 	}
 } //ToDoListManagerImpl
