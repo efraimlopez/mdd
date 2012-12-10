@@ -211,8 +211,8 @@ public class DesktopView extends ApplicationWindow {
 				}
 			}
 		});	
-		//createMenuManagerFolder();
-		//createMenuManagerTask();
+		createMenuManagerFolder();
+		createMenuManagerTask();
 		parent.layout();
 		return container;
 	}
