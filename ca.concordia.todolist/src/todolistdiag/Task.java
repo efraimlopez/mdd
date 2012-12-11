@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getTask()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskName'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskName='self.name <> null'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='taskName taskInFolder uniqueNames'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot taskName='self.name <> null' taskInFolder='self.orderedTasks->size() >= 1' uniqueNames='self.orderedTasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)'"
  * @generated
  */
 public interface Task extends EObject {

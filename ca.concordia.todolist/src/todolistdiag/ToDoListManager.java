@@ -207,7 +207,7 @@ public interface ToDoListManager extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
+	 * @model annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_sortCondition='folder.orderedTasks->size() > 1'"
 	 * @generated
 	 */
 	void sortTasks(SortingType sortingType, Folder folder);
@@ -215,7 +215,7 @@ public interface ToDoListManager extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
+	 * @model annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_moveCondition='folder.orderedTasks->size() > 1'"
 	 * @generated
 	 */
 	void moveTask(Task task, Folder folder, boolean up);

@@ -640,10 +640,10 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 
 		addEOperation(folderEClass, ecorePackage.getEEList(), "getOrderedTaskInOrder", 0, -1);
 
-		EOperation op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "sortTasks", 1, 1);
+		EOperation op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "sortTasks", 1, 1, IS_UNIQUE, !IS_ORDERED);
 		addEParameter(op, this.getSortingType(), "sortingType", 0, 1);
 
-		op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "moveTask", 1, 1);
+		op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "moveTask", 1, 1, IS_UNIQUE, !IS_ORDERED);
 		addEParameter(op, this.getTask(), "task", 0, 1);
 		addEParameter(op, ecorePackage.getEBoolean(), "up", 0, 1);
 		addEParameter(op, ecorePackage.getEEList(), "tfUpdated", 0, 1);
@@ -785,20 +785,20 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "taskName"
+			 "constraints", "taskName taskInFolder uniqueNames"
 		   });			
 		addAnnotation
 		  (folderEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "uniqueNamesSubFolders folderName"
-		   });				
+			 "constraints", "folderName uniqueNamesSubFolders"
+		   });						
 		addAnnotation
 		  (toDoListManagerEClass, 
 		   source, 
 		   new String[] {
 			 "constraints", "rootFolderParent uniqueTaskId uniqueFolderId rootIsPartOfSet"
-		   });							
+		   });									
 	}
 
 	/**
@@ -813,14 +813,28 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		  (taskEClass, 
 		   source, 
 		   new String[] {
-			 "taskName", "self.name <> null"
+			 "taskName", "self.name <> null",
+			 "taskInFolder", "self.orderedTasks->size() >= 1",
+			 "uniqueNames", "self.orderedTasks->forAll(t1 : Task, t2 : Task | t1 <> t2 implies t1.name <> t2.name)"
 		   });			
 		addAnnotation
 		  (folderEClass, 
 		   source, 
 		   new String[] {
-			 "uniqueNamesSubFolders", "self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)",
-			 "folderName", "self.name <> null"
+			 "folderName", "self.name <> null",
+			 "uniqueNamesSubFolders", "self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)"
+		   });		
+		addAnnotation
+		  ((EOperation)folderEClass.getEOperations().get(3), 
+		   source, 
+		   new String[] {
+			 "pre_sortCondition", "self.orderedTasks->size() > 1"
+		   });		
+		addAnnotation
+		  ((EOperation)folderEClass.getEOperations().get(4), 
+		   source, 
+		   new String[] {
+			 "pre_moveCondition", "self.orderedTasks->size() > 1"
 		   });				
 		addAnnotation
 		  (toDoListManagerEClass, 
@@ -830,6 +844,18 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 			 "uniqueTaskId", "tasks->isUnique(id)",
 			 "uniqueFolderId", "self.folders->isUnique(id)",
 			 "rootIsPartOfSet", "self.folders->includes(self.rootFolder)"
+		   });		
+		addAnnotation
+		  ((EOperation)toDoListManagerEClass.getEOperations().get(8), 
+		   source, 
+		   new String[] {
+			 "pre_sortCondition", "folder.orderedTasks->size() > 1"
+		   });		
+		addAnnotation
+		  ((EOperation)toDoListManagerEClass.getEOperations().get(9), 
+		   source, 
+		   new String[] {
+			 "pre_moveCondition", "folder.orderedTasks->size() > 1"
 		   });						
 	}
 
@@ -840,14 +866,14 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 	 * @generated
 	 */
 	protected void createExtendedMetaDataAnnotations() {
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";							
+		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";									
 		addAnnotation
 		  (getFolder_Name(), 
 		   source, 
 		   new String[] {
 			 "kind", "attribute",
 			 "namespace", ""
-		   });									
+		   });											
 		addAnnotation
 		  (getTaskFolderOrder_Folder(), 
 		   source, 
@@ -855,6 +881,18 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 			 "name", "folder",
 			 "namespace", ""
 		   });
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EOperation addEOperation(EClass owner, EClassifier type, String name, int lowerBound, int upperBound, boolean isUnique, boolean isOrdered) {
+		EOperation o = addEOperation(owner, type, name, lowerBound, upperBound);
+		o.setUnique(isUnique);
+		o.setOrdered(isOrdered);
+		return o;
 	}
 
 } //TodolistdiagPackageImpl

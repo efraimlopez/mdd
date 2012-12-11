@@ -10,10 +10,12 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="taskName"/>
+      <details key="constraints" value="taskName taskInFolder uniqueNames"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="taskName" value="self.name &lt;> null"/>
+      <details key="taskInFolder" value="self.orderedTasks->size() >= 1"/>
+      <details key="uniqueNames" value="self.orderedTasks->forAll(t1 : Task, t2 : Task | t1 &lt;> t2 implies t1.name &lt;> t2.name)"/>
     </eAnnotations>
     <eOperations name="statusNotStarted"/>
     <eOperations name="statusInProgress"/>
@@ -41,19 +43,25 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Folder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="uniqueNamesSubFolders folderName"/>
+      <details key="constraints" value="folderName uniqueNamesSubFolders"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="uniqueNamesSubFolders" value="self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 &lt;> f2 implies f1.name &lt;> f2.name)"/>
       <details key="folderName" value="self.name &lt;> null"/>
+      <details key="uniqueNamesSubFolders" value="self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 &lt;> f2 implies f1.name &lt;> f2.name)"/>
     </eAnnotations>
     <eOperations name="hasSubFolder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="getAssociatedTasks" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
     <eOperations name="getOrderedTaskInOrder" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
-    <eOperations name="sortTasks" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eOperations name="sortTasks" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="pre_sortCondition" value="self.orderedTasks->size() > 1"/>
+      </eAnnotations>
       <eParameters name="sortingType" eType="#//SortingType"/>
     </eOperations>
-    <eOperations name="moveTask" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eOperations name="moveTask" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="pre_moveCondition" value="self.orderedTasks->size() > 1"/>
+      </eAnnotations>
       <eParameters name="task" eType="#//Task"/>
       <eParameters name="up" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eParameters name="tfUpdated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
@@ -111,11 +119,17 @@
     <eOperations name="deleteFolder">
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
-    <eOperations name="sortTasks" ordered="false" lowerBound="1">
+    <eOperations name="sortTasks" ordered="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="pre_sortCondition" value="folder.orderedTasks->size() > 1"/>
+      </eAnnotations>
       <eParameters name="sortingType" eType="#//SortingType"/>
       <eParameters name="folder" eType="#//Folder"/>
     </eOperations>
-    <eOperations name="moveTask" lowerBound="1">
+    <eOperations name="moveTask" ordered="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="pre_moveCondition" value="folder.orderedTasks->size() > 1"/>
+      </eAnnotations>
       <eParameters name="task" eType="#//Task"/>
       <eParameters name="folder" eType="#//Folder"/>
       <eParameters name="up" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

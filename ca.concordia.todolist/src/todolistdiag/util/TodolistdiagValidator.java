@@ -137,6 +137,8 @@ public class TodolistdiagValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(task, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(task, diagnostics, context);
 		if (result || diagnostics != null) result &= validateTask_taskName(task, diagnostics, context);
+		if (result || diagnostics != null) result &= validateTask_taskInFolder(task, diagnostics, context);
+		if (result || diagnostics != null) result &= validateTask_uniqueNames(task, diagnostics, context);
 		return result;
 	}
 
@@ -158,6 +160,50 @@ public class TodolistdiagValidator extends EObjectValidator {
 						 DIAGNOSTIC_SOURCE,
 						 0,
 						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "taskInFolder", getObjectLabel(task, context) }),
+						 new Object[] { task }));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the uniqueNames constraint of '<em>Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public boolean validateTask_uniqueNames(Task task, DiagnosticChain diagnostics, Map context) {
+		// TODO implement the constraint
+		// -> specify the condition that violates the constraint
+		// -> verify the diagnostic details, including severity, code, and message
+		// Ensure that you remove @generated or mark it @generated NOT
+		// TODO implement the constraint
+		// -> specify the condition that violates the constraint
+		// -> verify the diagnostic details, including severity, code, and message
+		// Ensure that you remove @generated or mark it @generated NOT
+		boolean ok = true;
+		if(task.getName()!=null){
+			List folders = task.getAssociatedFolders();
+			for(Object o : folders){
+				Folder f = (Folder) o;
+				List tasks = f.getAssociatedTasks();
+				for(int i=0 ; i < tasks.size() ; i++){
+					Task t = (Task) tasks.get(i);
+					if(t.getId()!=task.getId() && t.getName().equals(task.getName())){
+						ok=false;
+						break;
+					}
+				}
+			}
+		}
+		if (!ok) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "taskUniqueName", getObjectLabel(task, context) }),
 						 new Object[] { task }));
 			}
 			return false;
@@ -201,8 +247,8 @@ public class TodolistdiagValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(folder, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(folder, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(folder, diagnostics, context);
-		if (result || diagnostics != null) result &= validateFolder_uniqueNamesSubFolders(folder, diagnostics, context);
 		if (result || diagnostics != null) result &= validateFolder_folderName(folder, diagnostics, context);
+		if (result || diagnostics != null) result &= validateFolder_uniqueNamesSubFolders(folder, diagnostics, context);
 		return result;
 	}
 

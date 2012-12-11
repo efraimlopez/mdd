@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see todolistdiag.TodolistdiagPackage#getFolder()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueNamesSubFolders folderName'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueNamesSubFolders='self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)' folderName='self.name <> null'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='folderName uniqueNamesSubFolders'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot folderName='self.name <> null' uniqueNamesSubFolders='self.subFolders->forAll(f1 : Folder, f2 : Folder | f1 <> f2 implies f1.name <> f2.name)'"
  * @generated
  */
 public interface Folder extends EObject {
@@ -173,7 +173,8 @@ public interface Folder extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model required="true"
+	 * @model required="true" ordered="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_sortCondition='self.orderedTasks->size() > 1'"
 	 * @generated
 	 */
 	boolean sortTasks(SortingType sortingType);
@@ -181,7 +182,8 @@ public interface Folder extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model required="true" tfUpdatedMany="false"
+	 * @model required="true" ordered="false" tfUpdatedMany="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot pre_moveCondition='self.orderedTasks->size() > 1'"
 	 * @generated
 	 */
 	boolean moveTask(Task task, boolean up, EList tfUpdated);

@@ -548,6 +548,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	@Override
 	public Task clone(){
 		Task clone = EMFManager.getInstance().getFactory().createTask();
+		clone.setId(this.getId());
 		clone.setImportanceLevel(this.getImportanceLevel());
 		clone.setName(this.getName());
 		clone.setStatus(this.getStatus());
