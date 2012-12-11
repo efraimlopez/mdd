@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
@@ -639,6 +640,14 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 
 		addEOperation(folderEClass, ecorePackage.getEEList(), "getOrderedTaskInOrder", 0, -1);
 
+		EOperation op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "sortTasks", 1, 1);
+		addEParameter(op, this.getSortingType(), "sortingType", 0, 1);
+
+		op = addEOperation(folderEClass, ecorePackage.getEBoolean(), "moveTask", 1, 1);
+		addEParameter(op, this.getTask(), "task", 0, 1);
+		addEParameter(op, ecorePackage.getEBoolean(), "up", 0, 1);
+		addEParameter(op, ecorePackage.getEEList(), "tfUpdated", 0, 1);
+
 		initEClass(toDoListManagerEClass, ToDoListManager.class, "ToDoListManager", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getToDoListManager_RootFolder(), this.getFolder(), null, "rootFolder", null, 1, 1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getToDoListManager_FolderManagerListener(), this.getFolderManagerListener(), null, "folderManagerListener", null, 0, -1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -646,7 +655,7 @@ public class TodolistdiagPackageImpl extends EPackageImpl implements Todolistdia
 		initEReference(getToDoListManager_Tasks(), this.getTask(), null, "tasks", null, 0, -1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getToDoListManager_PersistanceProvider(), this.getPersistenceProvider(), null, "persistanceProvider", null, 1, 1, ToDoListManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		EOperation op = addEOperation(toDoListManagerEClass, this.getTask(), "createTask", 1, 1);
+		op = addEOperation(toDoListManagerEClass, this.getTask(), "createTask", 1, 1);
 		addEParameter(op, ecorePackage.getEString(), "name", 0, 1);
 		addEParameter(op, this.getImportance(), "importance", 0, 1);
 		addEParameter(op, this.getStatus(), "status", 0, 1);

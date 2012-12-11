@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import todolistdiag.Folder;
+import todolistdiag.SortingType;
 import todolistdiag.Task;
 import todolistdiag.TaskFolderOrder;
 import todolistdiag.TodolistdiagPackage;
@@ -295,6 +296,94 @@ public class FolderImpl extends EObjectImpl implements Folder {
 				}			
 			});
 		return orderedTasks;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public boolean sortTasks(SortingType sortingType) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		if(orderedTasks==null && orderedTasks.size()==0){
+			return false;
+		}
+		if(sortingType==SortingType.BY_NAME_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t1.getTask().getName().compareTo(t2.getTask().getName());
+				}
+			});
+		}
+		if(sortingType==SortingType.BY_STATUS_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t2.getTask().getStatus().getValue()-t1.getTask().getStatus().getValue();
+				}			
+			});
+		}
+		if(sortingType==SortingType.BY_IMPORTANCE_LITERAL){
+			Collections.sort(orderedTasks, new Comparator<TaskFolderOrder>() {
+				@Override
+				public int compare(TaskFolderOrder t1, TaskFolderOrder t2) {
+					return t2.getTask().getImportanceLevel().getValue()-t1.getTask().getImportanceLevel().getValue();
+				}	
+			});
+		}
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean moveTask(Task task, boolean up, EList tfUpdated) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public boolean moveTask(Task task, boolean up, List tfUpdated) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		TaskFolderOrder aux = null;
+		TaskFolderOrder ref = null;
+		int totalElements = getOrderedTaskInOrder().size();
+		for(Object o : getOrderedTaskInOrder()){
+			TaskFolderOrder tf = (TaskFolderOrder) o;
+			if(!up && ref !=null){
+				aux = tf;
+				break;
+			}
+			if(tf.getTask().equals(task)){
+				ref = tf;
+			}
+			if(up && ref!=null) break;
+			aux = tf;
+		}
+		long currPos = ref.getTaskPosition();
+		boolean ok = false;
+		if(up && currPos>0){
+			ref.setTaskPosition(currPos-1);
+			aux.setTaskPosition(currPos);
+			ok = true;
+		}else if (!up && currPos < totalElements-1){
+			ref.setTaskPosition(currPos+1);
+			aux.setTaskPosition(currPos);
+			ok = true;
+		}
+		if(ok){
+			tfUpdated.add(aux);
+			tfUpdated.add(ref);
+		}
+		return ok;
 	}
 
 	/**

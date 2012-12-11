@@ -8,6 +8,7 @@ package todolistdiag;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -168,5 +169,28 @@ public interface Folder extends EObject {
 	 * @generated
 	 */
 	List getOrderedTaskInOrder();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean sortTasks(SortingType sortingType);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true" tfUpdatedMany="false"
+	 * @generated
+	 */
+	boolean moveTask(Task task, boolean up, EList tfUpdated);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true" tfUpdatedMany="false"
+	 */
+	boolean moveTask(Task task, boolean up, List tfUpdated);
 
 } // Folder
